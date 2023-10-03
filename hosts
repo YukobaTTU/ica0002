@@ -1,4 +1,8 @@
-YukobaTTU-1 ansible_host=193.40.156.67 ansible_port=17922 ansible_user=ubuntu
+YukobaTTU-1 ansible_host=193.40.156.67 ansible_port=14622 ansible_user=ubuntu
+YukobaTTU-2 ansible_host=193.40.156.67 ansible_port=5922 ansible_user=ubuntu
+
+[db_servers]
+YukobaTTU-2
 
 [web_servers]
 YukobaTTU-1
