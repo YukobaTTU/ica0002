@@ -12,6 +12,7 @@
     hosts: db_servers
     roles:
       - mysql
+      - bind
 
   - name: Web Server
     hosts: web_servers
