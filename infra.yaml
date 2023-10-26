@@ -9,6 +9,11 @@
     roles:
       - bind
 
+  - name: Prometheus
+    hosts: prometheus
+    roles:
+      - prometheus
+
   - name: Database Server
     hosts: db_servers
     roles:

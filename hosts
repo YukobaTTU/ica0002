@@ -7,5 +7,8 @@ YukobaTTU-2
 [dns_server]
 YukobaTTU-2
 
+[prometheus]
+YukobaTTU-2
+
 [web_servers]
 YukobaTTU-1
