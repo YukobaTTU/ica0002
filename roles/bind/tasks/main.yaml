@@ -6,6 +6,38 @@
 
 - name: Enable and Start Bind9
   ansible.builtin.service:
-    name: bind9
+    name: "{{ item }}"
     state: started
     enabled: true
+  loop:
+    - named
+
+- name: Template Bind9 configs
+  ansible.builtin.template:
+    src: named.conf.{{ item }}.j2
+    dest: /etc/bind/named.conf.{{ item }}
+    mode: '0644'
+  with_items:
+    - options
+    - local
+  notify: 
+    - Restart Bind9
+
+- name: Template Bind9 zone
+  ansible.builtin.template:
+    src: zone.j2
+    dest: /var/lib/bind/db.lockrify.ttu
+    mode: '0644'
+  notify: RNDC Reload Bind9
+
+- name: Update resolv.conf
+  ansible.builtin.template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    mode: '0644'
+
+- name: Shutdown systemd-resolved
+  ansible.builtin.service:
+    name: systemd-resolved
+    state: stopped
+    enabled: false

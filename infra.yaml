@@ -3,16 +3,16 @@
     hosts: all
     roles:
       - init
-    tasks:
-      - name: Update APT cache
-        ansible.builtin.apt:
-          cache_valid_time: 86400
+
+  - name: DNS Server
+    hosts: dns_server
+    roles:
+      - bind
 
   - name: Database Server
     hosts: db_servers
     roles:
       - mysql
-      - bind
 
   - name: Web Server
     hosts: web_servers

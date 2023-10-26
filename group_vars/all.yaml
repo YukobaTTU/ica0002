@@ -1,4 +1,4 @@
-mysql_host: 192.168.42.59
+mysql_host: YukobaTTU-2
 mysql_database: agama
 mysql_user: agama
 mysql_password: !vault |
@@ -8,3 +8,12 @@ mysql_password: !vault |
           62643833623330333466613332626463373435663865643863636565653935366436393833643234
           3166656534353636370a643631386330643639323161323934626463626563666238343136363134
           6239
+
+localnet: 192.168.42.0/23
+localhost: 127.0.0.0/8
+dnsforwarders: 
+  - 1.1.1.1
+  - 8.8.8.8
+  - 9.9.9.9
+
+domain_name: lockrify.ttu

@@ -1,0 +1,12 @@
+acl ABC { {{ localnet }}; {{ localhost }}; };
+options {
+	directory "/var/lib/bind";
+
+	forwarders { {% for ip in dnsforwarders %}
+		{{ ip }};
+	{% endfor %}
+	};
+	
+    allow-query { ABC; };
+	dnssec-validation no;
+};
