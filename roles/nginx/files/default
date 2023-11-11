@@ -6,4 +6,4 @@ server {
 		uwsgi_pass localhost:5000;
 		include uwsgi_params;
 	}
-}
+} 
