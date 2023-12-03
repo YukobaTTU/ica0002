@@ -11,7 +11,7 @@
 
 - name: Template Config
   ansible.builtin.template:
-    dest: /etc/prometheus/prometheus.yaml
+    dest: /etc/prometheus/prometheus.yml
     src: config.yaml.j2
     mode: '0644'
   notify: Restart Prometheus

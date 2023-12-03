@@ -1,6 +1,27 @@
 #- name: Ansible ping module
 #  ansible.builtin.ping:
 
-- name: Upadte APT cache
+- name: Update APT cache
   ansible.builtin.apt:
     cache_valid_time: 86400
+
+- name: Update resolv.conf
+  ansible.builtin.template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    mode: '0644'
+
+- name: Shutdown systemd-resolved
+  ansible.builtin.service:
+    name: systemd-resolved
+    state: stopped
+    enabled: false
+
+- name: Install Prometheus Node Exporter
+  ansible.builtin.apt:
+    name: prometheus-node-exporter
+    state: present
+
+- name: Install CA Certificates
+  ansible.builtin.apt:
+    name: ca-certificates>=20230311ubuntu0.20.04.1

@@ -1,7 +1,9 @@
 ---
 - name: Install Bind9
   ansible.builtin.apt:
-    name: bind9
+    name:
+      - bind9
+      - prometheus-bind-exporter
     state: present
 
 - name: Enable and Start Bind9
@@ -11,6 +13,7 @@
     enabled: true
   loop:
     - named
+    - prometheus-bind-exporter
 
 - name: Template Bind9 configs
   ansible.builtin.template:
@@ -22,6 +25,7 @@
     - local
   notify: 
     - Restart Bind9
+    - Restart Bind Exporter
 
 - name: Template Bind9 zone
   ansible.builtin.template:
@@ -29,15 +33,3 @@
     dest: /var/lib/bind/db.lockrify.ttu
     mode: '0644'
   notify: RNDC Reload Bind9
-
-- name: Update resolv.conf
-  ansible.builtin.template:
-    src: resolv.conf.j2
-    dest: /etc/resolv.conf
-    mode: '0644'
-
-- name: Shutdown systemd-resolved
-  ansible.builtin.service:
-    name: systemd-resolved
-    state: stopped
-    enabled: false

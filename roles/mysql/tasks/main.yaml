@@ -13,23 +13,55 @@
   ansible.builtin.copy:
     src: ../files/override.cnf
     dest: /etc/mysql/mysql.conf.d/override.cnf
+    mode: '0755'
   notify: Restart MySQL
 
-- name: Enable and start MySQL Server
+- name: Enable and Start MySQL Server
   ansible.builtin.service:
     name: mysql
     state: started
     enabled: true
 
-- name: MySQL database
+- name: MySQL Database
   community.mysql.mysql_db:
     name: "{{ mysql_database }}"
     login_unix_socket: /var/run/mysqld/mysqld.sock
 
-- name: MySQL user
+- name: MySQL User
   community.mysql.mysql_user:
     name: "{{ mysql_user }}"
     password: "{{ mysql_password }}"
     host: "%"
     priv: "{{ mysql_database }}.*:ALL"
     login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Install MySQL Exporter
+  ansible.builtin.apt:
+    name: prometheus-mysqld-exporter
+    state: present
+
+- name: MySQL Exporter User
+  community.mysql.mysql_user:
+    name: "{{ exporter_user }}"
+    password: "{{ exporter_password }}"
+    priv: "*.*:PROCESS,REPLICATION CLIENT,SELECT"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  no_log: true
+
+- name: Template my.cnf
+  ansible.builtin.template:
+    src: .my.cnf.j2
+    dest: /var/lib/prometheus/.my.cnf
+    mode: '0644'
+    owner: prometheus
+    group: prometheus
+  no_log: true
+  notify:
+    - Restart MySQL
+    - Restart MySQL Exporter
+
+- name: Enable and Start MySQL Exporter
+  ansible.builtin.service:
+    name: prometheus-mysqld-exporter
+    state: started
+    enabled: true
