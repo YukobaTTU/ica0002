@@ -1,13 +1,13 @@
 ---
 - name: Install Bind9
-  ansible.builtin.apt:
+  apt:
     name:
       - bind9
       - prometheus-bind-exporter
     state: present
 
 - name: Enable and Start Bind9
-  ansible.builtin.service:
+  service:
     name: "{{ item }}"
     state: started
     enabled: true
@@ -16,7 +16,7 @@
     - prometheus-bind-exporter
 
 - name: Template Bind9 configs
-  ansible.builtin.template:
+  template:
     src: named.conf.{{ item }}.j2
     dest: /etc/bind/named.conf.{{ item }}
     mode: '0644'
@@ -28,7 +28,7 @@
     - Restart Bind Exporter
 
 - name: Template Bind9 zone
-  ansible.builtin.template:
+  template:
     src: zone.j2
     dest: /var/lib/bind/db.lockrify.ttu
     mode: '0644'

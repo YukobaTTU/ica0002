@@ -1,23 +1,23 @@
 ---
 - name: Install MySQL Server
-  ansible.builtin.apt:
+  apt:
     name: mysql-server
     state: present
 
 - name: Install Python
-  ansible.builtin.apt:
+  apt:
     name: python3-pymysql
     state: present
 
 - name: Copy Override Config
-  ansible.builtin.copy:
+  copy:
     src: ../files/override.cnf
     dest: /etc/mysql/mysql.conf.d/override.cnf
     mode: '0755'
   notify: Restart MySQL
 
 - name: Enable and Start MySQL Server
-  ansible.builtin.service:
+  service:
     name: mysql
     state: started
     enabled: true
@@ -27,7 +27,7 @@
     name: "{{ mysql_database }}"
     login_unix_socket: /var/run/mysqld/mysqld.sock
 
-- name: MySQL User
+- name: Create MySQL User
   community.mysql.mysql_user:
     name: "{{ mysql_user }}"
     password: "{{ mysql_password }}"
@@ -36,21 +36,21 @@
     login_unix_socket: /var/run/mysqld/mysqld.sock
 
 - name: Install MySQL Exporter
-  ansible.builtin.apt:
+  apt:
     name: prometheus-mysqld-exporter
     state: present
 
-- name: MySQL Exporter User
+- name: Create MySQL Exporter User
   community.mysql.mysql_user:
-    name: "{{ exporter_user }}"
-    password: "{{ exporter_password }}"
+    name: "{{ mysql_exporter_user }}"
+    password: "{{ mysql_exporter_password }}"
     priv: "*.*:PROCESS,REPLICATION CLIENT,SELECT"
     login_unix_socket: /var/run/mysqld/mysqld.sock
   no_log: true
 
-- name: Template my.cnf
-  ansible.builtin.template:
-    src: .my.cnf.j2
+- name: Template exporter_my.cnf
+  template:
+    src: exporter_my.cnf.j2
     dest: /var/lib/prometheus/.my.cnf
     mode: '0644'
     owner: prometheus
@@ -61,7 +61,40 @@
     - Restart MySQL
 
 - name: Enable and Start MySQL Exporter
-  ansible.builtin.service:
+  service:
     name: prometheus-mysqld-exporter
     state: started
     enabled: true
+
+- name: Create Backup Directory
+  file:
+    path: /home/backup/mysql
+    state: directory
+    owner: backup
+    group: backup
+    mode: 0777
+
+- name: Create MySQL Backup User
+  community.mysql.mysql_user:
+    name: "{{mysql_backup_user}}"
+    password: "{{mysql_backup_password}}"
+    host: "%"
+    resource_limits:
+      MAX_USER_CONNECTIONS: 3
+    priv: "agama.*:SELECT,LOCK TABLES"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  no_log: true
+
+- name: Template backup_my.cnf
+  template:
+    src: backup_my.cnf.j2
+    dest: /home/backup/.my.cnf
+    owner: backup
+    group: backup
+    mode: 0600
+  no_log: true
+
+- name: Create MySQL Backup Cron
+  template:
+    src: cron-mysql-backup.j2
+    dest: /etc/cron.d/mysql-backup

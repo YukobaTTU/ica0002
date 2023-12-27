@@ -1,23 +1,23 @@
 - name: Install Prometheus
-  ansible.builtin.apt:
+  apt:
     name: prometheus
     state: present
 
 - name: Enable and Start Prometheus
-  ansible.builtin.service:
+  service:
     name: prometheus
     state: started
     enabled: true
 
 - name: Template Config
-  ansible.builtin.template:
+  template:
     dest: /etc/prometheus/prometheus.yml
     src: config.yaml.j2
     mode: '0644'
   notify: Restart Prometheus
 
 - name: Template Metrics
-  ansible.builtin.template:
+  template:
     src: metrics.yaml.j2
     dest: /etc/default/prometheus
     mode: '0755'

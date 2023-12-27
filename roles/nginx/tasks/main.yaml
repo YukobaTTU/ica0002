@@ -1,12 +1,12 @@
 - name: Install Nginx
-  ansible.builtin.apt:
+  apt:
     name: 
       - nginx
       - prometheus-nginx-exporter
     state: present
 
 - name: Template Nginx Config
-  ansible.builtin.template:
+  template:
     src: default.j2
     dest: /etc/nginx/sites-enabled/default
     mode: '0644'
@@ -15,7 +15,7 @@
     - Restart Nginx Exporter
 
 - name: Enable and Start Nginx Service
-  ansible.builtin.service:
+  service:
     name: "{{ item }}"
     state: started
     enabled: true

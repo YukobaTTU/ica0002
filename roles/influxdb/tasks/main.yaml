@@ -1,5 +1,5 @@
 - name: Create InfluxDB Download Directory
-  ansible.builtin.file:
+  file:
     path: /opt/influxdb
     state: directory
 
@@ -9,50 +9,50 @@
     dest: /opt/influxdb/influxdb_1.8.10_amd64.deb
 
 - name: Install influxdb
-  ansible.builtin.apt:
+  apt:
    deb: "/opt/influxdb/influxdb_1.8.10_amd64.deb"
 
 - name: Template influxdb.conf
-  ansible.builtin.template:
+  template:
     src: influxdb.conf.j2
     dest: /etc/influxdb/influxdb.conf
     mode: '0644'
   notify: Restart InfluxDB
 
 - name: Enable and Start InfluxDB
-  ansible.builtin.service:
+  service:
     name: influxdb
     state: started
     enabled: true
 
 - name: Create Telegraf Download Directory
-  ansible.builtin.file:
+  file:
     path: /opt/telegraf
     state: directory
 
 - name: Download Telegraf
-  ansible.builtin.get_url:
+  get_url:
     url: "https://dl.influxdata.com/telegraf/releases/telegraf_1.28.2-1_amd64.deb"
     dest: "/opt/telegraf/telegraf_1.28.2-1_amd64.deb"
 
 - name: Install Telegraf
-  ansible.builtin.apt:
+  apt:
     deb: "/opt/telegraf/telegraf_1.28.2-1_amd64.deb"
 
 - name: Create Telegraf directory
-  ansible.builtin.file:
+  file:
     path: /etc/telegraf
     state: directory
 
 - name: Template telegraf.conf
-  ansible.builtin.template:
+  template:
     src: telegraf.conf.j2
     dest: /etc/telegraf/telegraf.conf
     mode: '0644'
   notify: Restart Telegraf
 
 - name: Enable and Start Telegraf
-  ansible.builtin.service:
+  service:
     name: telegraf
     state: started
     enabled: true
@@ -66,7 +66,7 @@
     dest: /usr/local/bin/influx_stats_exporter
 
 - name: Create influxdb-stats-exporter Service
-  ansible.builtin.template:
+  template:
     src: influxdb-stats-exporter.service.j2
     dest: /etc/systemd/system/prometheus-influxdb-stats-exporter.service
 
@@ -79,3 +79,24 @@
     name: prometheus-influxdb-stats-exporter.service
     state: started
     enabled: true
+
+- name: Create Backup Directory
+  file:
+    path: /home/backup/influxdb
+    state: directory
+    owner: backup
+    group: backup
+    mode: 0777
+
+- name: Create Restore Directory
+  file:
+    path: /home/backup/restore/influxdb
+    state: directory
+    owner: backup
+    group: backup
+    mode: 0777
+
+- name: Create InfluxDB Backup Cron
+  template:
+    src: cron-influxdb-backup.j2
+    dest: /etc/cron.d/influxdb-backup

@@ -1,48 +1,48 @@
 - name: Create Directory for APT Key
-  ansible.builtin.file:
+  file:
     path: /etc/apt/keyrings
     state: directory
     mode: '0755'
 
 - name: Get Grafana Repository Key
-  ansible.builtin.get_url:
+  get_url:
     url: https://apt.grafana.com/gpg.key
     dest: /etc/apt/keyrings/grafana.asc
     mode: '0644'
 
 - name: Add Grafana Repository
-  ansible.builtin.apt_repository:
+  apt_repository:
     repo: "deb [signed-by=/etc/apt/keyrings/grafana.asc] https://apt.grafana.com/ stable main"
     state: present
     update_cache: true
 
 - name: Install Grafana
-  ansible.builtin.apt:
+  apt:
     name: grafana
     state: present
 
 - name: Enable and Start Grafana
-  ansible.builtin.service:
+  service:
     name: grafana-server
     state: started
     enabled: true
 
 - name: Template grafana.ini
-  ansible.builtin.template:
+  template:
     src: grafana.ini.j2
     dest: /etc/grafana/grafana.ini
     mode: '0644'
   notify: Restart Grafana
 
 - name: Template dashboards.yaml
-  ansible.builtin.template:
+  template:
     src: dashboards.yaml
     dest: /etc/grafana/provisioning/dashboards/dashboards.yaml
     mode: '0644'
   notify: Restart Grafana
 
 - name: Template datasources.yaml
-  ansible.builtin.template:
+  template:
     src: datasources.yaml
     dest: /etc/grafana/provisioning/datasources/datasources.yaml
     mode: '0644'

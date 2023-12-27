@@ -1,16 +1,16 @@
 ---
 - name: Install uWSGI
-  ansible.builtin.apt:
+  apt:
     name: uwsgi
     state: present
 
 - name: Install Dependencies
-  ansible.builtin.apt:
+  apt:
     name: uwsgi-plugin-python3
     state: present      
 
 - name: Template uWSGI config
-  ansible.builtin.template:
+  template:
     src: ../templates/agama.ini.j2
     dest: /etc/uwsgi/apps-enabled/agama.ini
     owner: agama
@@ -19,7 +19,7 @@
   notify: Restart uWSGI
 
 - name: Enable and start uWSGI service
-  ansible.builtin.service:
+  service:
     name: uwsgi
     state: started
     enabled: true

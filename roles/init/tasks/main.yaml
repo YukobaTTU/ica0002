@@ -2,49 +2,49 @@
 #  ansible.builtin.ping:
 
 - name: Update APT cache
-  ansible.builtin.apt:
+  apt:
     cache_valid_time: 86400
 
 - name: Update resolv.conf
-  ansible.builtin.template:
+  template:
     src: resolv.conf.j2
     dest: /etc/resolv.conf
     mode: '0644'
 
 - name: Shutdown systemd-resolved
-  ansible.builtin.service:
+  service:
     name: systemd-resolved
     state: stopped
     enabled: false
 
 - name: Install Prometheus Node Exporter
-  ansible.builtin.apt:
+  apt:
     name: prometheus-node-exporter
     state: present
 
 - name: Install CA Certificates
-  ansible.builtin.apt:
+  apt:
     name: ca-certificates>=20230311ubuntu0.20.04.1
 
 - name: Install rsyslog
-  ansible.builtin.apt:
+  apt:
     name: rsyslog
     state: present
 
 - name: Configure rsyslog to use only UDP
-  ansible.builtin.lineinfile:
+  lineinfile:
     path: /etc/rsyslog.conf
     regexp: '^module(load="imudp")'
     line: 'module(load="imudp")'
 
 - name: Send Logs to Telegraf
-  ansible.builtin.lineinfile:
+  lineinfile:
     path: /etc/rsyslog.conf
     line: '*.* @localhost:6514'
   notify: Restart rsyslog
 
 - name: Create backup User
-  ansible.builtin.user:
+  user:
     name: backup
     home: /home/backup
     generate_ssh_key: true
@@ -57,3 +57,20 @@
     owner: backup
     group: backup
     mode: 0600
+
+- name: Create restore Directory 
+  file:
+    path: /home/backup/restore
+    state: directory
+    owner: backup
+    group: backup
+    mode: 0777
+
+- name: Install Duplicity
+  apt:
+    name: duplicity
+
+
+- name: Install dnspython
+  apt:
+    name: python3-dnspython
