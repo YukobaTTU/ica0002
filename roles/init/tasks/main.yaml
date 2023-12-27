@@ -42,3 +42,18 @@
     path: /etc/rsyslog.conf
     line: '*.* @localhost:6514'
   notify: Restart rsyslog
+
+- name: Create backup User
+  ansible.builtin.user:
+    name: backup
+    home: /home/backup
+    generate_ssh_key: true
+    ssh_key_file: /home/backup/.ssh/id_rsa
+
+- name: Add Backup Server to Known Hosts
+  template:
+    src: known_hosts.j2
+    dest: /home/backup/.ssh/known_hosts
+    owner: backup
+    group: backup
+    mode: 0600
