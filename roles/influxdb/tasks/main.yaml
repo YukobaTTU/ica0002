@@ -88,14 +88,6 @@
     group: backup
     mode: 0777
 
-- name: Create Restore Directory
-  file:
-    path: /home/backup/restore/influxdb
-    state: directory
-    owner: backup
-    group: backup
-    mode: 0777
-
 - name: Create InfluxDB Backup Cron
   template:
     src: cron-influxdb-backup.j2
