@@ -48,8 +48,11 @@
     mode: '0644'
   notify: Restart Grafana
 
-- name: Copy main.json
-  ansible.builtin.copy:
-    dest: /var/lib/grafana/dashboards/
-    src: main.json
-    mode: '0644'
+- name: Copy Dashboards
+  copy:
+    src: "{{ item }}"
+    dest: /var/lib/grafana/dashboards/{{ item }}
+  loop:
+    - main.json
+    - syslog.json
+  notify: Restart Grafana

@@ -57,8 +57,8 @@
     group: prometheus
   no_log: true
   notify:
-    - Restart MySQL
     - Restart MySQL Exporter
+    - Restart MySQL
 
 - name: Enable and Start MySQL Exporter
   ansible.builtin.service:

@@ -25,3 +25,20 @@
 - name: Install CA Certificates
   ansible.builtin.apt:
     name: ca-certificates>=20230311ubuntu0.20.04.1
+
+- name: Install rsyslog
+  ansible.builtin.apt:
+    name: rsyslog
+    state: present
+
+- name: Configure rsyslog to use only UDP
+  ansible.builtin.lineinfile:
+    path: /etc/rsyslog.conf
+    regexp: '^module(load="imudp")'
+    line: 'module(load="imudp")'
+
+- name: Send Logs to Telegraf
+  ansible.builtin.lineinfile:
+    path: /etc/rsyslog.conf
+    line: '*.* @localhost:6514'
+  notify: Restart rsyslog

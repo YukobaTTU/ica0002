@@ -1,12 +1,15 @@
 acl ABC { {{ localnet }}; {{ localhost }}; };
 options {
-	directory "/var/lib/bind";
+  directory "/var/lib/bind";
 
-	forwarders { {% for ip in dnsforwarders %}
-		{{ ip }};
-	{% endfor %}
-	};
+  forwarders { {% for ip in dnsforwarders %}
+    {{ ip }};
+  {% endfor %}
+  };
 	
-    allow-query { ABC; };
-	dnssec-validation no;
+  allow-query { ABC; };
+  dnssec-validation no;
+};
+statistics-channels {
+  inet {{ localip }} port 8053 allow { {{ localip }}; };
 };

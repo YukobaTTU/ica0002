@@ -3,30 +3,48 @@
     hosts: all
     roles:
       - init
+    tags: init
 
   - name: DNS Server
     hosts: dns_server
     roles:
       - bind
+    tags: bind
 
   - name: Prometheus
     hosts: prometheus
     roles:
       - prometheus
+    tags: prometheus
 
   - name: Grafana
     hosts: grafana
     roles:  
       - grafana
+    tags: grafana
 
-  - name: Database Server
-    hosts: db_servers
-    roles:
-      - mysql
+  - name: InfluxDB
+    hosts: influxdb
+    roles:  
+      - influxdb
+    tags: influxdb
+
+  - name: Pinger
+    hosts: pinger
+    roles:  
+      - pinger
+    tags: pinger
 
   - name: Web Server
     hosts: web_servers
     roles:
       - agama
       - uwsgi
-      - nginx 
+      - nginx
+    tags: webserver
+
+  - name: Database Server
+    hosts: db_servers
+    roles:
+      - mysql
+    tags: dbserver
