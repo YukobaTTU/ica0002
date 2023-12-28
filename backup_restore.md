@@ -41,13 +41,13 @@ sudo mysql agama < /home/backup/restore/mysql/agama.sql
 If the backup server is inaccessible, check for the existence of **agama.sql** in the **/home/backup/mysql/** directory as a local backup. Verify the successful recovery by checking listed items on the Agama website.
 
 ## InfluxDB Recovery Steps
-1. Copy the InfluxDB backup file from the backup server to **/home/backup/restore/influxdb** on the second VM:
+1. Copy the InfluxDB backup file from the backup server to **/home/backup/restore/influxdb** on the first VM:
 ```
 sudo -u backup duplicity --no-encryption restore rsync://YukobaTTU@backup.lockrify.ttu/influxdb /home/backup/restore/influxdb
 ```
 2. Stop the **telegraf** service:
 ```
-service telegraf stop
+sudo service telegraf stop
 ```
 3. Delete the **telegraf** database from InfluxDB:
 ```

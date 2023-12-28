@@ -8,7 +8,7 @@
     url: https://dl.influxdata.com/influxdb/releases/influxdb_1.8.10_amd64.deb
     dest: /opt/influxdb/influxdb_1.8.10_amd64.deb
 
-- name: Install influxdb
+- name: Install InfluxDB
   apt:
    deb: "/opt/influxdb/influxdb_1.8.10_amd64.deb"
 
@@ -25,24 +25,28 @@
     state: started
     enabled: true
 
-- name: Create Telegraf Download Directory
+- name: Create Directory for apt Key
   file:
-    path: /opt/telegraf
+    path: /etc/apt/keyrings
     state: directory
+    mode: '0755'
 
-- name: Download Telegraf
+- name: Get Telegraf Repository Key
   get_url:
-    url: "https://dl.influxdata.com/telegraf/releases/telegraf_1.28.2-1_amd64.deb"
-    dest: "/opt/telegraf/telegraf_1.28.2-1_amd64.deb"
+    url: https://repos.influxdata.com/influxdata-archive.key
+    dest: /etc/apt/keyrings/telegraf.asc
+    mode: '0644'
 
-- name: Install Telegraf
+- name: Add Telegraf Repository
+  apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/telegraf.asc] https://repos.influxdata.com/debian stable main"
+    state: present
+    update_cache: true
+
+- name: Install Telegraf 1.28.2
   apt:
-    deb: "/opt/telegraf/telegraf_1.28.2-1_amd64.deb"
-
-- name: Create Telegraf directory
-  file:
-    path: /etc/telegraf
-    state: directory
+    name: telegraf=1.28.2-1
+    state: present
 
 - name: Template telegraf.conf
   template:
@@ -59,7 +63,7 @@
 
 - name: Download InfluxDB exporter
   get_url:
-    mode: 0770
+    mode: '0770'
     owner: prometheus
     group: prometheus
     url: https://github.com/carlpett/influxdb_stats_exporter/releases/download/v0.1.1/influx_stats_exporter_linux_amd64
@@ -86,7 +90,7 @@
     state: directory
     owner: backup
     group: backup
-    mode: 0777
+    mode: '0777'
 
 - name: Create InfluxDB Backup Cron
   template:

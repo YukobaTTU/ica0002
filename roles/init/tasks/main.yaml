@@ -40,7 +40,7 @@
 - name: Send Logs to Telegraf
   lineinfile:
     path: /etc/rsyslog.conf
-    line: '*.* @localhost:6514'
+    line: '*.* @localhost:6514;RSYSLOG_SyslogProtocol23Format'
   notify: Restart rsyslog
 
 - name: Create backup User

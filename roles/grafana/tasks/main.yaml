@@ -27,6 +27,11 @@
     state: started
     enabled: true
 
+- name: Create Dashboards Directory
+  file:
+    path: /var/lib/grafana/dashboards/
+    state: directory
+
 - name: Template grafana.ini
   template:
     src: grafana.ini.j2
@@ -55,4 +60,5 @@
   loop:
     - main.json
     - syslog.json
+    - mysql.json
   notify: Restart Grafana

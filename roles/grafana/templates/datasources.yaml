@@ -23,4 +23,4 @@ datasources:
     url: http://{{groups['influxdb'][0]}}:8086
     jsonData:
       dbName: telegraf
-      httpMode: GET
+      httpMode: POST
