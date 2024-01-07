@@ -19,6 +19,10 @@ forwarders_list:
   - 8.8.8.8
   - 9.9.9.9
 
+a_records:
+  - backup: 192.168.42.132
+  - google: 8.8.8.8
+
 dns_transfer_secret: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           30346561396439643437376465316665666461303362313930653531316635333466373462636535
@@ -36,10 +40,6 @@ dns_nsupdate_secret: !vault |
           3335323931323339610a663830373766636539633138663731306637643635656130396663393365
           63613337313532643562613862353965306263613034623463636563373964663631626635666634
           3861353436626134326237633565623066656663656536316266
-
-a_records:
-  - backup: 192.168.42.132
-  - google: 8.8.8.8
 
 mysql_exporter_user: exporter
 mysql_exporter_password: !vault |
@@ -87,6 +87,36 @@ backup_server_ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGE
 agama_port: 8001
 agama_per_vm: 3
 
+jobs_list:
+  - name: linux
+    target_port: 9100
+    target_group: all
+
+  - name: bind9
+    target_port: 9119
+    target_group: bind_servers
+
+  - name: mysql
+    target_port: 9104
+    target_group: db_servers
+
+  - name: nginx
+    target_port: 9113
+    target_group: nginx_servers
+
+  - name: influxdb
+    target_port: 9424
+    target_group: influxdb_servers
+
+  - name: haproxy
+    target_port: 9101
+    target_group: haproxy_servers
+
+  - name: keepalived
+    target_port: 9165
+    target_group: keepalived_servers
+
 haproxy_exporter_port: 9188 
 
 nginx_main_host: YukobaTTU-1
+prioritized_keepalived: YukobaTTU-1

@@ -18,9 +18,9 @@
   tags: dns
 
 - name: Prometheus Server
-  hosts: prometheus
+  hosts: prometheus_servers
   roles:
-    - prometheus_servers
+    - prometheus
   tags: prometheus
 
 - name: Database Server

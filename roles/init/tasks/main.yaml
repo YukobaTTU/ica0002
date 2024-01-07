@@ -1,56 +1,30 @@
-#- name: Ansible ping module
-#  ansible.builtin.ping:
-
 - name: Update APT cache
-  apt:
+  ansible.builtin.apt:
     cache_valid_time: 86400
 
-- name: Update resolv.conf
-  template:
-    src: resolv.conf.j2
-    dest: /etc/resolv.conf
-    mode: '0644'
-
-- name: Shutdown systemd-resolved
-  service:
-    name: systemd-resolved
-    state: stopped
-    enabled: false
+- name: Download Certificates
+  apt:
+    name: ca-certificates=20230311ubuntu0.20.04.1
+    update_cache: true
 
 - name: Install Prometheus Node Exporter
   apt:
     name: prometheus-node-exporter
-    state: present
 
-- name: Install CA Certificates
-  apt:
-    name: ca-certificates>=20230311ubuntu0.20.04.1
-
-- name: Install rsyslog
-  apt:
-    name: rsyslog
-    state: present
-
-- name: Configure rsyslog to use only UDP
-  lineinfile:
-    path: /etc/rsyslog.conf
-    regexp: '^module(load="imudp")'
-    line: 'module(load="imudp")'
-
-- name: Send Logs to Telegraf
-  lineinfile:
-    path: /etc/rsyslog.conf
-    line: '*.* @localhost:6514;RSYSLOG_SyslogProtocol23Format'
+- name: Copy rsyslog Config
+  copy:
+    src: rsyslog-tel.conf
+    dest: /etc/rsyslog.d/tel.conf
   notify: Restart rsyslog
 
-- name: Create backup User
+- name: Create Backup User
   user:
     name: backup
     home: /home/backup
     generate_ssh_key: true
     ssh_key_file: /home/backup/.ssh/id_rsa
 
-- name: Add Backup Server to Known Hosts
+- name: Template known_hosts
   template:
     src: known_hosts.j2
     dest: /home/backup/.ssh/known_hosts
@@ -58,7 +32,7 @@
     group: backup
     mode: 0600
 
-- name: Create restore Directory 
+- name: Create Restore Directory 
   file:
     path: /home/backup/restore
     state: directory
@@ -69,7 +43,6 @@
 - name: Install Duplicity
   apt:
     name: duplicity
-
 
 - name: Install dnspython
   apt:

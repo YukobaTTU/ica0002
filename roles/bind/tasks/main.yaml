@@ -17,7 +17,7 @@
     src: "{{ item }}.j2"
     dest: /var/cache/bind/db.{{ item }}
     force: false
-  notify: Restart bind9
+  notify: Restart Bind9
   loop: 
   - "{{ domain_name }}"
   - "{{ reverse_domain_name }}"
