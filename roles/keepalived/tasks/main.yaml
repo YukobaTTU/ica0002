@@ -1,0 +1,57 @@
+- set_fact: 
+    default_ip: "{{ hostvars['YukobaTTU-1']['ansible_default_ipv4']['address'] }}"
+    ip_prefix: "{{ hostvars['YukobaTTU-1']['ansible_default_ipv4']['prefix'] }}"
+- set_fact: 
+    first_second_ip_octet: "{{ default_ip.split('.')[:2] }}" 
+    third_ip_octet: "{{ default_ip.split('.')[2] }}"
+    fourth_ip_octet: "{{ default_ip.split('.')[3] }}"
+
+- name: Install Keepalived
+  apt:
+    name: keepalived
+
+- name: Create keepalived_script User
+  ansible.builtin.user:
+    name: keepalived_script
+
+- name: Copy keepalived_script
+  copy:
+    src: keepalived_script
+    dest: /home/keepalived_script/keepalived_script
+    mode: 0700
+    owner: keepalived_script
+    group: keepalived_script
+
+- name: Copy keepalived.conf
+  template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+  notify: Restart Keepalived
+
+- name: Enable and Start Keepalived
+  service:
+    name: keepalived
+    state: started
+    enabled: true
+
+- name: Download Keepalived Exporter
+  unarchive:
+    remote_src: true 
+    src: http://backup/keepalived-exporter-1.2.0.linux-amd64.tar.gz
+    dest: /usr/local/bin/
+
+- name: Create keepalived-exporter service
+  copy: 
+    src: keepalived-exporter.service
+    dest: /etc/systemd/system/keepalived-exporter.service
+
+- name: Restart systemctl daemon
+  systemd:
+   daemon_reload: true
+
+- name: Enable and Start keepalived-exporter service
+  service:
+    name: keepalived-exporter.service
+    state: started
+    enabled: true
+

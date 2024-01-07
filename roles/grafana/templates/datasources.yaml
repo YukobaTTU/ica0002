@@ -11,7 +11,7 @@ datasources:
   - name: InfluxDB-pinger
     type: influxdb
     access: proxy
-    url: http://{{groups['pinger'][0]}}:8086
+    url: http://{{groups['pinger_servers'][0]}}:8086
     editable: false
     jsonData:
       dbName: pingerdb
@@ -20,7 +20,7 @@ datasources:
   - name: InfluxDB-telegraf
     type: influxdb
     access: proxy
-    url: http://{{groups['influxdb'][0]}}:8086
+    url: http://{{groups['influxdb_servers'][0]}}:8086
     jsonData:
       dbName: telegraf
       httpMode: POST

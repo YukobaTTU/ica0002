@@ -1,0 +1,64 @@
+- name: Create Directory for APT Key
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Get Grafana Repository Key
+  get_url:
+    url: https://apt.grafana.com/gpg.key
+    dest: /etc/apt/keyrings/grafana.asc
+    mode: '0644'
+
+- name: Add Grafana Repository
+  apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/grafana.asc] https://apt.grafana.com/ stable main"
+    state: present
+    update_cache: true
+
+- name: Install Grafana
+  apt:
+    name: grafana
+    state: present
+
+- name: Enable and Start Grafana
+  service:
+    name: grafana-server
+    state: started
+    enabled: true
+
+- name: Create Dashboards Directory
+  file:
+    path: /var/lib/grafana/dashboards/
+    state: directory
+
+- name: Template grafana.ini
+  template:
+    src: grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+    mode: '0644'
+  notify: Restart Grafana
+
+- name: Template dashboards.yaml
+  template:
+    src: dashboards.yaml
+    dest: /etc/grafana/provisioning/dashboards/dashboards.yaml
+    mode: '0644'
+  notify: Restart Grafana
+
+- name: Template datasources.yaml
+  template:
+    src: datasources.yaml
+    dest: /etc/grafana/provisioning/datasources/datasources.yaml
+    mode: '0644'
+  notify: Restart Grafana
+
+- name: Copy Dashboards
+  copy:
+    src: "{{ item }}"
+    dest: /var/lib/grafana/dashboards/{{ item }}
+  loop:
+    - main.json
+    - syslog.json
+    - mysql.json
+  notify: Restart Grafana

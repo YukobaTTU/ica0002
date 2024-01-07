@@ -1,5 +1,0 @@
-nameserver {{ hostvars["YukobaTTU-2"]['ansible_default_ipv4']['address'] }}
-{% for dns in dnsforwarders %}
-nameserver {{ dns }}
-{% endfor %}
-search {{ domain_name }}

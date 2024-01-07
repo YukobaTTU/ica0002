@@ -1,0 +1,4 @@
+search {{ domain_name }}
+{% for server in groups['bind_slaves']%}
+nameserver {{ hostvars[server]['ansible_default_ipv4']['address'] }}
+{% endfor %}

@@ -1,24 +1,26 @@
 - name: Install Prometheus
   apt:
     name: prometheus
-    state: present
 
-- name: Enable and Start Prometheus
-  service:
-    name: prometheus
-    state: started
-    enabled: true
 
-- name: Template Config
+# add prefix web.external-url... to get a correct redirection url from http://.../prometheus
+- name: Edit Prometheus Service
   template:
-    dest: /etc/prometheus/prometheus.yml
-    src: config.yaml.j2
-    mode: '0644'
-  notify: Restart Prometheus
-
-- name: Template Metrics
-  template:
-    src: metrics.yaml.j2
+    src: prometheus
     dest: /etc/default/prometheus
-    mode: '0755'
   notify: Restart Prometheus
+
+- name: Template prometheus.yml
+  template:
+    src: prometheus.yml
+    dest: /etc/prometheus/prometheus.yml
+  notify: Restart Prometheus
+
+- name: Add Prometheus A Record
+  include_role:
+    name: dns_record
+    tasks_from: add_dns_records
+  vars:
+    record: "prometheus"
+    value: "{{ groups['prometheus_servers'][0] }}"
+    type: "CNAME"

@@ -1,50 +1,78 @@
 ---
-  - name: Initial setup
-    hosts: all
-    roles:
-      - init
-    tags: init
+- name: Initial setup
+  hosts: all
+  roles:
+    - init
+  tags: init
 
-  - name: DNS Server
-    hosts: dns_server
-    roles:
-      - bind
-    tags: bind
+- name: Bind Server
+  hosts: bind_servers
+  roles:
+    - bind
+  tags: bind
 
-  - name: Prometheus
-    hosts: prometheus
-    roles:
-      - prometheus
-    tags: prometheus
+- name: DNS Config
+  hosts: all
+  roles:
+    - config-dns
+  tags: dns
 
-  - name: Grafana
-    hosts: grafana
-    roles:  
-      - grafana
-    tags: grafana
+- name: Prometheus Server
+  hosts: prometheus
+  roles:
+    - prometheus_servers
+  tags: prometheus
 
-  - name: InfluxDB
-    hosts: influxdb
-    roles:  
-      - influxdb
-    tags: influxdb
+- name: Database Server
+  hosts: db_servers
+  roles:
+    - mysql
+  tags: dbserver
 
-  - name: Pinger
-    hosts: pinger
-    roles:  
-      - pinger
-    tags: pinger
+- name: InfluxDB
+  hosts: influxdb_servers
+  roles:  
+    - influxdb
+  tags: influxdb
 
-  - name: Web Server
-    hosts: web_servers
-    roles:
-      - agama
-      - uwsgi
-      - nginx
-    tags: webserver
+- name: Docker Server
+  hosts: docker_servers
+  roles:
+    - role: docker
+  tags: docker
 
-  - name: Database Server
-    hosts: db_servers
-    roles:
-      - mysql
-    tags: dbserver
+- name: Pinger Server
+  hosts: pinger_servers
+  roles:  
+    - pinger
+  tags: pinger
+
+- name: Grafana Server
+  hosts: grafana_servers
+  roles:  
+    - grafana
+  tags: grafana
+
+- name: Agama Server
+  hosts: agama_servers
+  roles:
+    - role: agama
+  tags: agama
+
+- name: Nginx Server
+  hosts: nginx_servers
+  roles:
+    - role: nginx
+  tags: nginx
+
+- name: HAProxy
+  hosts: haproxy_servers
+  roles: 
+    - role: haproxy
+  tags: haproxy
+
+- name: Keepalived
+  hosts: keepalived_servers
+  roles:
+    - role: keepalived
+  tags: keepalived

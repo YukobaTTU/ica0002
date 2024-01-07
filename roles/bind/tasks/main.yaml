@@ -1,35 +1,64 @@
----
 - name: Install Bind9
   apt:
-    name:
-      - bind9
-      - prometheus-bind-exporter
-    state: present
+    name: bind9
 
-- name: Enable and Start Bind9
+- name: Template Bind9 Config
+  template:
+    src: named.conf.{{ item }}.j2
+    dest: /etc/bind/named.conf.{{ item }}
+  loop:
+    - options
+    - local
+  notify: Restart Bind9
+  no_log: true
+
+- name: Template Master Zone Config
+  template:
+    src: "{{ item }}.j2"
+    dest: /var/cache/bind/db.{{ item }}
+    force: false
+  notify: Restart bind9
+  loop: 
+  - "{{ domain_name }}"
+  - "{{ reverse_domain_name }}"
+  when: inventory_hostname in groups['bind_masters']
+
+- name: Install Bind Exporter
+  apt:
+    name: prometheus-bind-exporter
+
+- name: Enable and Start Bind9 and Exporter
   service:
     name: "{{ item }}"
     state: started
     enabled: true
   loop:
-    - named
+    - bind9
     - prometheus-bind-exporter
 
-- name: Template Bind9 configs
-  template:
-    src: named.conf.{{ item }}.j2
-    dest: /etc/bind/named.conf.{{ item }}
-    mode: '0644'
-  with_items:
-    - options
-    - local
-  notify: 
-    - Restart Bind9
-    - Restart Bind Exporter
+- name: Run Handlers
+  meta: flush_handlers
 
-- name: Template Bind9 zone
-  template:
-    src: zone.j2
-    dest: /var/lib/bind/db.lockrify.ttu
-    mode: '0644'
-  notify: RNDC Reload Bind9
+- name: Add A Records
+  include_role:
+    name: dns_record
+    tasks_from: add_dns_records
+  vars:
+    record: "{{ item.key }}"
+    value: "{{ item.value }}"
+    type: "A"
+  loop: "{{ a_records | map('dict2items') | flatten }}"
+  when: inventory_hostname in groups['bind_masters']
+
+- name: Add NS Records
+  include_role:
+    name: dns_record
+    tasks_from: add_dns_records
+  vars:
+    record: "ns-{{server_index + 1}}"
+    value: "{{ item }}"
+    type: "CNAME"
+  loop: "{{ groups['bind_servers'] }}"
+  loop_control:
+    index_var: server_index
+  when: inventory_hostname in groups['bind_masters']

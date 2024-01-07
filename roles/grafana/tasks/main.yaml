@@ -1,64 +1,53 @@
-- name: Create Directory for APT Key
-  file:
-    path: /etc/apt/keyrings
-    state: directory
-    mode: '0755'
-
-- name: Get Grafana Repository Key
-  get_url:
-    url: https://apt.grafana.com/gpg.key
-    dest: /etc/apt/keyrings/grafana.asc
-    mode: '0644'
-
-- name: Add Grafana Repository
-  apt_repository:
-    repo: "deb [signed-by=/etc/apt/keyrings/grafana.asc] https://apt.grafana.com/ stable main"
-    state: present
-    update_cache: true
-
-- name: Install Grafana
-  apt:
+- name: Install Grafana via Docker
+  community.docker.docker_container:
     name: grafana
-    state: present
+    image: grafana/grafana
+    volumes: /opt/grafana:/etc/grafana
+    published_ports: "{{ grafana_port }}:3000"
+    restart_policy: "unless-stopped"
 
-- name: Enable and Start Grafana
-  service:
-    name: grafana-server
-    state: started
-    enabled: true
-
-- name: Create Dashboards Directory
-  file:
-    path: /var/lib/grafana/dashboards/
+- name: Create Provisioning Directories
+  ansible.builtin.file:
+    path: /opt/grafana/provisioning/{{ item }}
     state: directory
+  loop:
+    - dashboards
+    - datasources
 
 - name: Template grafana.ini
   template:
     src: grafana.ini.j2
-    dest: /etc/grafana/grafana.ini
-    mode: '0644'
+    dest: /opt/grafana/grafana.ini
   notify: Restart Grafana
+  no_log: true
 
 - name: Template dashboards.yaml
   template:
     src: dashboards.yaml
-    dest: /etc/grafana/provisioning/dashboards/dashboards.yaml
-    mode: '0644'
+    dest: /opt/grafana/provisioning/dashboards/dashboards.yaml
   notify: Restart Grafana
 
 - name: Template datasources.yaml
   template:
     src: datasources.yaml
-    dest: /etc/grafana/provisioning/datasources/datasources.yaml
-    mode: '0644'
+    dest: /opt/grafana/provisioning/datasources/datasources.yaml
   notify: Restart Grafana
 
 - name: Copy Dashboards
   copy:
     src: "{{ item }}"
-    dest: /var/lib/grafana/dashboards/{{ item }}
+    dest: /opt/grafana/provisioning/dashboards/{{ item }}
   loop:
     - main.json
-    - syslog.json
     - mysql.json
+    - syslog.json
   notify: Restart Grafana
+
+- name: Add Grafana A Record
+  include_role:
+    name: dns_record
+    tasks_from: add_dns_records
+  vars:
+    record: "grafana"
+    value: "{{ groups['grafana_servers'][0] }}"
+    type: "CNAME"

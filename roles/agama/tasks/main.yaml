@@ -1,22 +1,56 @@
-- name: Create User
-  user:
-    user: agama
-    state: present
-
-- name: Create Directory
-  file:
-    owner: agama
-    state: directory
+- name: Create agama Directory
+  ansible.builtin.file:
     path: /opt/agama
+    state: directory
 
-- name: Install Dependencies
-  apt:
-    name: 
-      - python3-flask-sqlalchemy
-      - python3-pymysql    
-    state: present
+- name: Download agama Files
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/hudolejev/agama/master/{{ item }}
+    dest: /opt/agama/{{ item }}
+  loop:
+    - agama.py
+    - Dockerfile
 
-- name: Install Agama
-  get_url:
-    url: https://raw.githubusercontent.com/hudolejev/agama/master/agama.py
-    dest: /opt/agama
+- name: Create agama Docker Image
+  community.docker.docker_image:
+    name: agama
+    source: build
+    build:
+      path: /opt/agama
+
+- name: Start agama Docker Container
+  community.docker.docker_container:
+    name: agama{{item}}
+    image: agama
+    published_ports: "{{ agama_port + item }}:8000"
+    restart_policy: "unless-stopped"
+    env:
+       AGAMA_DATABASE_URI: mysql+pymysql://{{ mysql_user }}:{{ mysql_password }}@{{ mysql_host }}/{{ mysql_database }}
+  no_log: true
+  loop: "{{ range(agama_per_vm) }}"
+
+- name: List agama Containers
+  docker_host_info:
+    containers: true
+    containers_filters:
+      name: "^agama*"
+  register: agama_containers
+
+- name: Stop Unnecessary agama Containers
+  community.docker.docker_container:
+    name: agama{{ item }}
+    state: stopped
+    force_kill: true
+  loop: "{{ [] if agama_per_vm == agama_containers['containers'] | length else range(agama_containers['containers'] | length) }}"
+
+- name: Add agama A records
+  include_role:
+    name: dns_record
+    tasks_from: add_dns_records
+  vars:
+    record: "www-{{server_index + 1}}"
+    value: "{{ item }}"
+    type: "CNAME"
+  loop: "{{ groups['agama_servers'] }}"
+  loop_control:
+    index_var: server_index

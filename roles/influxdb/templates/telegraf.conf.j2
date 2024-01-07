@@ -11,9 +11,7 @@
   hostname = ""
   omit_hostname = false
 [[outputs.influxdb]]
-  urls = ["http://yukobattu-1:8086"]
-  database = "telegraf"
 [[outputs.prometheus_client]]
-  listen = ":9273"
+    listen = ":9273"
 [[inputs.syslog]]
-  server = "udp://:6514"
+    server = "udp://:6514"

@@ -1,24 +1,51 @@
-YukobaTTU-1 ansible_host=193.40.156.67 ansible_port=45422 ansible_user=ubuntu
-YukobaTTU-2 ansible_host=193.40.156.67 ansible_port=39622 ansible_user=ubuntu
+YukobaTTU-1 ansible_host=193.40.156.67 ansible_port=15122 ansible_user=ubuntulock
+YukobaTTU-2 ansible_host=193.40.156.67 ansible_port=5422 ansible_user=ubuntu
 
 [db_servers]
 YukobaTTU-1
 YukobaTTU-2
 
-[dns_server]
+[prometheus_servers]
+YukobaTTU-3
+
+[bind_masters]
+YukobaTTU-3
+
+[bind_slaves]
+YukobaTTU-1
 YukobaTTU-2
 
-[prometheus]
+[bind_servers:children]
+bind_masters
+bind_slaves
+
+[influxdb_servers]
+YukobaTTU-3
+
+[pinger_servers]
+YukobaTTU-3
+
+[grafana_servers]
+YukobaTTU-3
+
+[docker_servers]
+YukobaTTU-1
+YukobaTTU-2
+YukobaTTU-3
+
+[agama_servers]
+YukobaTTU-1
 YukobaTTU-2
 
-[web_servers]
+[nginx_servers]
 YukobaTTU-1
+YukobaTTU-2
+YukobaTTU-3
 
-[grafana]
+[keepalived_servers]
 YukobaTTU-1
+YukobaTTU-2
 
-[influxdb]
+[haproxy_servers]
 YukobaTTU-1
-
-[pinger]
-YukobaTTU-1
+YukobaTTU-2
