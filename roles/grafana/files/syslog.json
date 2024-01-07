@@ -764,7 +764,7 @@
           ]
         }
       ],
-      "title": "syslog count",
+      "title": "Syslog Count",
       "type": "timeseries"
     },
     {
@@ -1152,6 +1152,6 @@
   "timezone": "",
   "title": "Syslog",
   "uid": "TIYeHqRgZ",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
