@@ -865,7 +865,7 @@
               {
                 "id": "custom.cellOptions",
                 "value": {
-                  "mode": "gradient",
+                  "mode": "basic",
                   "type": "color-background"
                 }
               },
@@ -1152,6 +1152,6 @@
   "timezone": "",
   "title": "Syslog",
   "uid": "TIYeHqRgZ",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
