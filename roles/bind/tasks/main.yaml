@@ -39,7 +39,7 @@
 - name: Run Handlers
   meta: flush_handlers
 
-- name: Add A Records
+- name: Add A records
   include_role:
     name: dns_record
     tasks_from: add_dns_records
@@ -50,7 +50,7 @@
   loop: "{{ a_records | map('dict2items') | flatten }}"
   when: inventory_hostname in groups['bind_masters']
 
-- name: Add NS Records
+- name: Add NS records
   include_role:
     name: dns_record
     tasks_from: add_dns_records

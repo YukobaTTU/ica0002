@@ -90,6 +90,14 @@
     - Reset MySQL Source
     - Reset MySQL Replica
 
+- name: Create Restore Directory 
+  file:
+    path: /home/backup/restore/mysql
+    state: directory
+    owner: backup
+    group: backup
+    mode: 0777
+
 - name: Create Backup Directory
   file:
     path: /home/backup/mysql

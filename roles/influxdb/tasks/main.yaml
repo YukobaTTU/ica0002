@@ -84,6 +84,14 @@
     state: started
     enabled: true
 
+- name: Create Restore Directory 
+  file:
+    path: /home/backup/restore/influxdb
+    state: directory
+    owner: backup
+    group: backup
+    mode: 0777
+
 - name: Create Backup Directory
   file:
     path: /home/backup/influxdb
