@@ -2,6 +2,7 @@
   apt:
     name: haproxy
 
+# Use 'dns_record' role to add CNAME records for each server in the 'haproxy_servers' group.
 - name: Add HAProxy A Records
   include_role:
     name: dns_record

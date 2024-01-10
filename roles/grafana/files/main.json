@@ -576,42 +576,50 @@
     },
     {
       "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
+        "type": "influxdb",
+        "uid": "P655D68AE10046A05"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "color": "red",
-                  "index": 1,
-                  "text": "DOWN"
-                },
-                "1": {
-                  "color": "green",
-                  "index": 0,
-                  "text": "UP"
-                }
-              },
-              "type": "value"
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
             },
-            {
-              "options": {
-                "match": "null+nan",
-                "result": {
-                  "color": "red",
-                  "index": 2,
-                  "text": "No Data"
-                }
-              },
-              "type": "special"
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
             }
-          ],
+          },
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -629,86 +637,171 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
+        "h": 6,
         "w": 8,
         "x": 0,
         "y": 10
       },
-      "hideTimeOverride": true,
-      "id": 16,
+      "id": 24,
       "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "vertical",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "textMode": "value_and_name",
-        "wideLayout": false
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "pluginVersion": "10.2.3",
       "targets": [
         {
+          "alias": "taltech.ee",
           "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "type": "influxdb",
+            "uid": "P655D68AE10046A05"
           },
-          "editorMode": "code",
-          "expr": "haproxy_server_up{instance=\"YukobaTTU-1:9101\"}",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "rtt",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "A",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "rtt"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "dst::tag",
+              "operator": "=",
+              "value": "taltech.ee"
+            }
+          ]
+        },
+        {
+          "alias": "google.com",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "P655D68AE10046A05"
+          },
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
           "hide": false,
-          "instant": false,
-          "legendFormat": "{{ instance }}, {{ server }}",
-          "range": true,
-          "refId": "A"
+          "measurement": "rtt",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "rtt"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "dst::tag",
+              "operator": "=",
+              "value": "google.com"
+            }
+          ]
         },
         {
+          "alias": "8.8.8.8",
           "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
+            "type": "influxdb",
+            "uid": "P655D68AE10046A05"
           },
-          "editorMode": "code",
-          "expr": "haproxy_server_up{instance=\"YukobaTTU-1:9101\", server=\"docker2\"} or on() vector(0)",
-          "hide": true,
-          "instant": false,
-          "legendFormat": "{{ instance }}, {{ server }}",
-          "range": true,
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
-          "expr": "haproxy_server_up{instance=\"YukobaTTU-2:9101\", server=\"docker1\"} or on() vector(0)",
-          "hide": true,
-          "instant": false,
-          "legendFormat": "{{ instance }}, {{ server }}",
-          "range": true,
-          "refId": "C"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
-          "expr": "haproxy_server_up{instance=\"YukobaTTU-2:9101\", server=\"docker2\"} or on() vector(0)",
-          "hide": true,
-          "instant": false,
-          "legendFormat": "{{ instance }}, {{ server }}",
-          "range": true,
-          "refId": "D"
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "hide": false,
+          "measurement": "rtt",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "rtt"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "dst::tag",
+              "operator": "=",
+              "value": "8.8.8.8"
+            }
+          ]
         }
       ],
-      "timeFrom": "5s",
-      "title": "HAProxy 1 Container Status",
-      "type": "stat"
+      "title": "Latency",
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -1187,103 +1280,6 @@
                 }
               },
               "type": "value"
-            },
-            {
-              "options": {
-                "match": "null+nan",
-                "result": {
-                  "color": "red",
-                  "index": 2,
-                  "text": "No Data"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 8,
-        "x": 0,
-        "y": 13
-      },
-      "hideTimeOverride": true,
-      "id": 23,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "vertical",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value_and_name",
-        "wideLayout": false
-      },
-      "pluginVersion": "10.2.3",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "editorMode": "code",
-          "expr": "haproxy_server_up{instance=\"YukobaTTU-2:9101\"}",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "{{ instance }}, {{ server }}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "timeFrom": "5s",
-      "title": "HAProxy 2 Container Status",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "0": {
-                  "color": "red",
-                  "index": 1,
-                  "text": "DOWN"
-                },
-                "1": {
-                  "color": "green",
-                  "index": 0,
-                  "text": "UP"
-                }
-              },
-              "type": "value"
             }
           ],
           "thresholds": {
@@ -1716,6 +1712,239 @@
       ],
       "title": "Bind9 Status",
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "DOWN"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "UP"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "match": "null+nan",
+                "result": {
+                  "color": "red",
+                  "index": 2,
+                  "text": "No Data"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 11,
+        "x": 0,
+        "y": 16
+      },
+      "hideTimeOverride": true,
+      "id": 16,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value_and_name",
+        "wideLayout": false
+      },
+      "pluginVersion": "10.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "haproxy_server_up{instance=\"YukobaTTU-1:9101\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{ instance }}, {{ server }}",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "haproxy_server_up{instance=\"YukobaTTU-1:9101\", server=\"docker2\"} or on() vector(0)",
+          "hide": true,
+          "instant": false,
+          "legendFormat": "{{ instance }}, {{ server }}",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "haproxy_server_up{instance=\"YukobaTTU-2:9101\", server=\"docker1\"} or on() vector(0)",
+          "hide": true,
+          "instant": false,
+          "legendFormat": "{{ instance }}, {{ server }}",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "haproxy_server_up{instance=\"YukobaTTU-2:9101\", server=\"docker2\"} or on() vector(0)",
+          "hide": true,
+          "instant": false,
+          "legendFormat": "{{ instance }}, {{ server }}",
+          "range": true,
+          "refId": "D"
+        }
+      ],
+      "timeFrom": "5s",
+      "title": "HAProxy 1 Container Status",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "DOWN"
+                },
+                "1": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "UP"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "match": "null+nan",
+                "result": {
+                  "color": "red",
+                  "index": 2,
+                  "text": "No Data"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 12,
+        "x": 11,
+        "y": 16
+      },
+      "hideTimeOverride": true,
+      "id": 23,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value_and_name",
+        "wideLayout": false
+      },
+      "pluginVersion": "10.2.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "haproxy_server_up{instance=\"YukobaTTU-2:9101\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{ instance }}, {{ server }}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "timeFrom": "5s",
+      "title": "HAProxy 2 Container Status",
+      "type": "stat"
     }
   ],
   "refresh": "5s",
@@ -1732,6 +1961,6 @@
   "timezone": "",
   "title": "Main",
   "uid": "ef169fee-1fc6-49f8-a1d0-84a6819b8613",
-  "version": 5,
+  "version": 1,
   "weekStart": ""
 }

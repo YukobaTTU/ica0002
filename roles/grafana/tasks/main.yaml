@@ -43,6 +43,7 @@
     - syslog.json
   notify: Restart Grafana
 
+# Use 'dns_record' role to add CNAME record for server in the 'grafana_servers' group.
 - name: Add Grafana A Record
   include_role:
     name: dns_record

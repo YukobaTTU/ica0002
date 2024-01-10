@@ -1,3 +1,4 @@
+# Not /temp to avoid .deb file disappearing
 - name: Create InfluxDB Download Directory
   file:
     path: /opt/influxdb
@@ -25,7 +26,7 @@
     state: started
     enabled: true
 
-- name: Create Directory for apt Key
+- name: Create Directory for APT Key
   file:
     path: /etc/apt/keyrings
     state: directory
@@ -105,6 +106,7 @@
     src: cron-influxdb-backup.j2
     dest: /etc/cron.d/influxdb-backup
 
+# Use 'dns_record' role to add CNAME record for server in the 'influxdb_servers' group.
 - name: Add InfluxDB A Record
   include_role:
     name: dns_record

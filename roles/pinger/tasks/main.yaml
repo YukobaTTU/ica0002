@@ -9,34 +9,33 @@
 
 - name: Copy pinger.sh
   copy:
-    src: ../files/pinger.sh
+    src: pinger.sh
+    owner: pinger
+    group: pinger
+    mode: 0770
     dest: /usr/local/bin/pinger
-    mode: '0755'
-
-- name: Create /etc/pinger directory
-  file:
-    path: /etc/pinger
-    state: directory
-    mode: '0755'
-
-- name: Copy pinger.conf
-  template:
-    src: pinger.conf.j2
-    dest: /etc/pinger/pinger.conf
-    mode: '0644'
 
 - name: Create systemd Service Unit File
   template:
     src: pinger.service.j2
     dest: /etc/systemd/system/pinger.service
-    mode: '0644'
 
 - name: Reload systemd Configuration
   systemd:
     daemon_reload: yes
 
+- name: Create /etc/pinger directory
+  file:
+    path: /etc/pinger
+    state: directory
+
+- name: Copy pinger.conf
+  template:
+    src: pinger.conf.j2
+    dest: /etc/pinger/pinger.conf
+
 - name: Enable and Start pinger
-  systemd:
-    name: pinger
+  service:
+    name: pinger.service
     state: started
     enabled: yes

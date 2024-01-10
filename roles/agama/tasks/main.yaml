@@ -18,6 +18,10 @@
     build:
       path: /opt/agama
 
+# Creates docker containers according to specified amount.
+# Ex. agama0 agama1 agama2
+# Host port is dynamic, container port is static
+# Ex. 8001:8000, 8002:8000, 8003:8000
 - name: Start agama Docker Container
   community.docker.docker_container:
     name: agama{{item}}
@@ -36,14 +40,17 @@
       name: "^agama*"
   register: agama_containers
 
-- name: Stop Unnecessary agama Containers
+# Removes any agama containers that are not required based on the value of agama_per_vm.
+- name: Stop unnecessary agama containers
   community.docker.docker_container:
     name: agama{{ item }}
     state: stopped
     force_kill: true
   loop: "{{ [] if agama_per_vm == agama_containers['containers'] | length else range(agama_containers['containers'] | length) }}"
+  when: item + 1 > agama_per_vm
 
-- name: Add agama A records
+# Uses 'dns_record' role to add CNAME records for each server in the 'agama_servers' group.
+- name: Add agama A Records
   include_role:
     name: dns_record
     tasks_from: add_dns_records

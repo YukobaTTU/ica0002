@@ -30,7 +30,7 @@ Full backups are stored on the backup server at **/home/YukobaTTU/mysql** (MySQL
 * If VMs were configured around 15 minutes ago, wait for the lecture bot to copy the public SSH key to the backup server's **authorized_keys** file to resolve potential connection issues.
 
 ## MySQL Recovery Steps
-1. Copy the MySQL backup file from the backup server to **/home/backup/restore/mysql** on the second VM:
+1. Copy the MySQL backup file from the backup server to **/home/backup/restore/mysql** on the first VM:
 ```
 sudo -u backup duplicity --no-encryption restore rsync://YukobaTTU@backup.lockrify.ttu/mysql /home/backup/restore/mysql
 ```
@@ -41,7 +41,7 @@ sudo mysql agama < /home/backup/restore/mysql/agama.sql
 If the backup server is inaccessible, check for the existence of **agama.sql** in the **/home/backup/mysql/** directory as a local backup. Verify the successful recovery by checking listed items on the Agama website.
 
 ## InfluxDB Recovery Steps
-1. Copy the InfluxDB backup file from the backup server to **/home/backup/restore/influxdb** on the first VM:
+1. Copy the InfluxDB backup file from the backup server to **/home/backup/restore/influxdb** on the third VM:
 ```
 sudo -u backup duplicity --no-encryption restore rsync://YukobaTTU@backup.lockrify.ttu/influxdb /home/backup/restore/influxdb
 ```

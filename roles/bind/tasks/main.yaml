@@ -36,10 +36,19 @@
     - bind9
     - prometheus-bind-exporter
 
+# Run handlers before adding DNS records
 - name: Run Handlers
   meta: flush_handlers
 
-- name: Add A records
+# Use 'dns_record' role to add A records for backup IP and google IP on each server in the 'agama_servers' group only if the host is in the 'bind_masters' group.
+# map('dict2items'): Converts the dictionary into a list of key-value pairs.
+# flatten: Flattens the list of dictionaries into a single list.
+# Ex.
+# - host1
+# - 192.168.1.1
+# - host2
+# - 192.168.1.2
+- name: Add A Records
   include_role:
     name: dns_record
     tasks_from: add_dns_records
@@ -50,7 +59,8 @@
   loop: "{{ a_records | map('dict2items') | flatten }}"
   when: inventory_hostname in groups['bind_masters']
 
-- name: Add NS records
+# Use 'dns_record' role to add NS records for each server in the 'bind_masters' group.
+- name: Add NS Records
   include_role:
     name: dns_record
     tasks_from: add_dns_records
