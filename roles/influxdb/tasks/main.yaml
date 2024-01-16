@@ -17,7 +17,7 @@
   template:
     src: influxdb.conf.j2
     dest: /etc/influxdb/influxdb.conf
-    mode: '0644'
+    mode: 0644
   notify: Restart InfluxDB
 
 - name: Enable and Start InfluxDB
@@ -30,13 +30,13 @@
   file:
     path: /etc/apt/keyrings
     state: directory
-    mode: '0755'
+    mode: 0755
 
 - name: Get Telegraf Repository Key
   get_url:
     url: https://repos.influxdata.com/influxdata-archive.key
     dest: /etc/apt/keyrings/telegraf.asc
-    mode: '0644'
+    mode: 0644
 
 - name: Add Telegraf Repository
   apt_repository:
@@ -53,7 +53,7 @@
   template:
     src: telegraf.conf.j2
     dest: /etc/telegraf/telegraf.conf
-    mode: '0644'
+    mode: 0644
   notify: Restart Telegraf
 
 - name: Enable and Start Telegraf
@@ -64,7 +64,7 @@
 
 - name: Download InfluxDB exporter
   get_url:
-    mode: '0770'
+    mode: 0770
     owner: prometheus
     group: prometheus
     url: https://github.com/carlpett/influxdb_stats_exporter/releases/download/v0.1.1/influx_stats_exporter_linux_amd64
@@ -91,7 +91,7 @@
     state: directory
     owner: backup
     group: backup
-    mode: 0777
+    mode: 0770
 
 - name: Create Backup Directory
   file:
@@ -99,7 +99,7 @@
     state: directory
     owner: backup
     group: backup
-    mode: '0777'
+    mode: 0770
 
 - name: Create InfluxDB Backup Cron
   template:

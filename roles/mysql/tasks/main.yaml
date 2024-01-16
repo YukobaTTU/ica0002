@@ -47,7 +47,7 @@
   template:
     src: exporter_my.cnf.j2
     dest: /var/lib/prometheus/.my.cnf
-    mode: '0644'
+    mode: 0644
     owner: prometheus
     group: prometheus
   no_log: true
@@ -96,7 +96,7 @@
     state: directory
     owner: backup
     group: backup
-    mode: 0777
+    mode: 0770
 
 - name: Create Backup Directory
   file:
@@ -104,13 +104,13 @@
     state: directory
     owner: backup
     group: backup
-    mode: 0777
+    mode: 0770
 
 - name: Create MySQL Backup User
   community.mysql.mysql_user:
     name: "{{ mysql_backup_user }}"
     password: "{{ mysql_backup_password }}"
-    host: "%"
+    host: "localhost"
     resource_limits:
       MAX_USER_CONNECTIONS: 3
     priv: "agama.*:SELECT,LOCK TABLES"
