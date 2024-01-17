@@ -1,4 +1,4 @@
-Tue Jan 16 02:04:10 PM EET 2024
+Wed Jan 17 09:59:22 AM EET 2024
 + hostname
 openSUSE
 + ansible-playbook infra.yaml --diff
@@ -6,28 +6,29 @@ openSUSE
 PLAY [Initial setup] ***********************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 ok: [YukobaTTU-3]
+ok: [YukobaTTU-2]
 
 TASK [init : Update APT cache] *************************************************
+ok: [YukobaTTU-1]
 changed: [YukobaTTU-2]
-changed: [YukobaTTU-1]
 changed: [YukobaTTU-3]
 
 TASK [init : Download Certificates] ********************************************
 The following packages will be upgraded:
   ca-certificates
-1 upgraded, 0 newly installed, 0 to remove and 266 not upgraded.
-changed: [YukobaTTU-3]
-The following packages will be upgraded:
-  ca-certificates
+Preconfiguring packages ...
 1 upgraded, 0 newly installed, 0 to remove and 266 not upgraded.
 changed: [YukobaTTU-1]
 The following packages will be upgraded:
   ca-certificates
 1 upgraded, 0 newly installed, 0 to remove and 266 not upgraded.
 changed: [YukobaTTU-2]
+The following packages will be upgraded:
+  ca-certificates
+1 upgraded, 0 newly installed, 0 to remove and 266 not upgraded.
+changed: [YukobaTTU-3]
 
 TASK [init : Install Prometheus Node Exporter] *********************************
 The following additional packages will be installed:
@@ -51,7 +52,7 @@ The following NEW packages will be installed:
   moreutils prometheus-node-exporter prometheus-node-exporter-collectors
   smartmontools
 0 upgraded, 8 newly installed, 0 to remove and 266 not upgraded.
-changed: [YukobaTTU-1]
+changed: [YukobaTTU-3]
 The following additional packages will be installed:
   libio-pty-perl libipc-run-perl libtime-duration-perl libtimedate-perl
   moreutils prometheus-node-exporter-collectors smartmontools
@@ -62,7 +63,7 @@ The following NEW packages will be installed:
   moreutils prometheus-node-exporter prometheus-node-exporter-collectors
   smartmontools
 0 upgraded, 8 newly installed, 0 to remove and 266 not upgraded.
-changed: [YukobaTTU-3]
+changed: [YukobaTTU-1]
 
 TASK [init : Copy rsyslog Config] **********************************************
 --- before
@@ -76,18 +77,6 @@ TASK [init : Copy rsyslog Config] **********************************************
 +*.* @influxdb:6514;RSYSLOG_SyslogProtocol23Format
 \ No newline at end of file
 
-changed: [YukobaTTU-2]
---- before
-+++ after: /home/mando/Documents/ica0002/roles/init/files/rsyslog-tel.conf
-@@ -0,0 +1,6 @@
-+$ActionQueueType LinkedList # use asynchronous processing
-+$ActionQueueFileName srvrfwd # set file name, also enables disk mode
-+$ActionResumeRetryCount -1 # infinite retries on insert failure
-+$ActionQueueSaveOnShutdown on # save in-memory data if rsyslog shuts down
-+
-+*.* @influxdb:6514;RSYSLOG_SyslogProtocol23Format
-\ No newline at end of file
-
 changed: [YukobaTTU-3]
 --- before
 +++ after: /home/mando/Documents/ica0002/roles/init/files/rsyslog-tel.conf
@@ -101,6 +90,18 @@ changed: [YukobaTTU-3]
 \ No newline at end of file
 
 changed: [YukobaTTU-1]
+--- before
++++ after: /home/mando/Documents/ica0002/roles/init/files/rsyslog-tel.conf
+@@ -0,0 +1,6 @@
++$ActionQueueType LinkedList # use asynchronous processing
++$ActionQueueFileName srvrfwd # set file name, also enables disk mode
++$ActionResumeRetryCount -1 # infinite retries on insert failure
++$ActionQueueSaveOnShutdown on # save in-memory data if rsyslog shuts down
++
++*.* @influxdb:6514;RSYSLOG_SyslogProtocol23Format
+\ No newline at end of file
+
+changed: [YukobaTTU-2]
 
 TASK [init : Create Backup User] ***********************************************
 changed: [YukobaTTU-2]
@@ -109,16 +110,7 @@ changed: [YukobaTTU-1]
 
 TASK [init : Template known_hosts] *********************************************
 --- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpvr5uijnh/known_hosts.j2
-@@ -0,0 +1,3 @@
-+192.168.42.132 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90
-+backup ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90
-+backup.lockrify.ttu ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90
-\ No newline at end of file
-
-changed: [YukobaTTU-2]
---- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpyszq0nt2/known_hosts.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpc2uvj0a_/known_hosts.j2
 @@ -0,0 +1,3 @@
 +192.168.42.132 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90
 +backup ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90
@@ -127,7 +119,16 @@ changed: [YukobaTTU-2]
 
 changed: [YukobaTTU-1]
 --- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmppfa69kd8/known_hosts.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpqpkwqx1x/known_hosts.j2
+@@ -0,0 +1,3 @@
++192.168.42.132 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90
++backup ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90
++backup.lockrify.ttu ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90
+\ No newline at end of file
+
+changed: [YukobaTTU-2]
+--- before
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmp020y45yi/known_hosts.j2
 @@ -0,0 +1,3 @@
 +192.168.42.132 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90
 +backup ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEu6pFFWyuRrl4WGFPQGElYN9txwTGm2wSntcpVAaN90
@@ -147,17 +148,6 @@ The following NEW packages will be installed:
   duplicity librsync2 python3-bcrypt python3-fasteners python3-future
   python3-lockfile python3-monotonic python3-paramiko
 0 upgraded, 8 newly installed, 0 to remove and 266 not upgraded.
-changed: [YukobaTTU-1]
-The following additional packages will be installed:
-  librsync2 python3-bcrypt python3-fasteners python3-future python3-lockfile
-  python3-monotonic python3-paramiko
-Suggested packages:
-  python3-boto ncftp lftp tahoe-lafs python3-swiftclient python3-pip par2
-  python-future-doc python-lockfile-doc python3-gssapi
-The following NEW packages will be installed:
-  duplicity librsync2 python3-bcrypt python3-fasteners python3-future
-  python3-lockfile python3-monotonic python3-paramiko
-0 upgraded, 8 newly installed, 0 to remove and 266 not upgraded.
 changed: [YukobaTTU-2]
 The following additional packages will be installed:
   librsync2 python3-bcrypt python3-fasteners python3-future python3-lockfile
@@ -170,6 +160,17 @@ The following NEW packages will be installed:
   python3-lockfile python3-monotonic python3-paramiko
 0 upgraded, 8 newly installed, 0 to remove and 266 not upgraded.
 changed: [YukobaTTU-3]
+The following additional packages will be installed:
+  librsync2 python3-bcrypt python3-fasteners python3-future python3-lockfile
+  python3-monotonic python3-paramiko
+Suggested packages:
+  python3-boto ncftp lftp tahoe-lafs python3-swiftclient python3-pip par2
+  python-future-doc python-lockfile-doc python3-gssapi
+The following NEW packages will be installed:
+  duplicity librsync2 python3-bcrypt python3-fasteners python3-future
+  python3-lockfile python3-monotonic python3-paramiko
+0 upgraded, 8 newly installed, 0 to remove and 266 not upgraded.
+changed: [YukobaTTU-1]
 
 TASK [init : Install dnspython] ************************************************
 The following NEW packages will be installed:
@@ -179,11 +180,11 @@ changed: [YukobaTTU-3]
 The following NEW packages will be installed:
   python3-dnspython
 0 upgraded, 1 newly installed, 0 to remove and 266 not upgraded.
-changed: [YukobaTTU-2]
+changed: [YukobaTTU-1]
 The following NEW packages will be installed:
   python3-dnspython
 0 upgraded, 1 newly installed, 0 to remove and 266 not upgraded.
-changed: [YukobaTTU-1]
+changed: [YukobaTTU-2]
 
 RUNNING HANDLER [init : Restart rsyslog] ***************************************
 changed: [YukobaTTU-2]
@@ -193,8 +194,8 @@ changed: [YukobaTTU-1]
 PLAY [Bind Server] *************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
 
 TASK [bind : Install Bind9] ****************************************************
@@ -217,7 +218,7 @@ The following NEW packages will be installed:
 The following packages will be upgraded:
   bind9-dnsutils bind9-libs
 2 upgraded, 4 newly installed, 0 to remove and 264 not upgraded.
-changed: [YukobaTTU-3]
+changed: [YukobaTTU-2]
 The following additional packages will be installed:
   bind9-dnsutils bind9-libs bind9-utils dns-root-data python3-ply
 Suggested packages:
@@ -227,18 +228,18 @@ The following NEW packages will be installed:
 The following packages will be upgraded:
   bind9-dnsutils bind9-libs
 2 upgraded, 4 newly installed, 0 to remove and 264 not upgraded.
-changed: [YukobaTTU-2]
+changed: [YukobaTTU-3]
 
 TASK [bind : Template Bind9 Config] ********************************************
-changed: [YukobaTTU-1] => (item=None)
 changed: [YukobaTTU-2] => (item=None)
+changed: [YukobaTTU-1] => (item=None)
 changed: [YukobaTTU-3] => (item=None)
 changed: [YukobaTTU-2] => (item=None)
 changed: [YukobaTTU-2]
-changed: [YukobaTTU-3] => (item=None)
-changed: [YukobaTTU-3]
 changed: [YukobaTTU-1] => (item=None)
 changed: [YukobaTTU-1]
+changed: [YukobaTTU-3] => (item=None)
+changed: [YukobaTTU-3]
 
 TASK [bind : Template Master Zone Config] **************************************
 skipping: [YukobaTTU-1] => (item=lockrify.ttu) 
@@ -246,7 +247,7 @@ skipping: [YukobaTTU-1] => (item=168.192.in-addr.arpa)
 skipping: [YukobaTTU-2] => (item=lockrify.ttu) 
 skipping: [YukobaTTU-2] => (item=168.192.in-addr.arpa) 
 --- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpgaa0d_gb/lockrify.ttu.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpdyf9huuz/lockrify.ttu.j2
 @@ -0,0 +1,15 @@
 +$TTL	604800
 +lockrify.ttu.	IN	SOA	vm1.lockrify.ttu. yuto.lockrify.ttu. (
@@ -260,13 +261,13 @@ skipping: [YukobaTTU-2] => (item=168.192.in-addr.arpa)
 +lockrify.ttu.	IN	NS	YukobaTTU-1
 +lockrify.ttu.	IN	NS	YukobaTTU-2
 +
-+YukobaTTU-1	IN	A	192.168.43.101
-+YukobaTTU-2	IN	A	192.168.43.92
-+YukobaTTU-3	IN	A	192.168.43.197
++YukobaTTU-1	IN	A	192.168.42.105
++YukobaTTU-2	IN	A	192.168.42.191
++YukobaTTU-3	IN	A	192.168.42.68
 
 changed: [YukobaTTU-3] => (item=lockrify.ttu)
 --- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpr8xzkt0u/168.192.in-addr.arpa.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmp_55kjpds/168.192.in-addr.arpa.j2
 @@ -0,0 +1,19 @@
 +$TTL	604800
 +168.192.in-addr.arpa.	IN	SOA	vm1.168.192.in-addr.arpa. yuto.168.192.in-addr.arpa. (
@@ -280,13 +281,13 @@ changed: [YukobaTTU-3] => (item=lockrify.ttu)
 +168.192.in-addr.arpa.	IN	NS	YukobaTTU-1
 +168.192.in-addr.arpa.	IN	NS	YukobaTTU-2
 +
-+YukobaTTU-1	IN	A	192.168.43.101
-+YukobaTTU-2	IN	A	192.168.43.92
-+YukobaTTU-3	IN	A	192.168.43.197
++YukobaTTU-1	IN	A	192.168.42.105
++YukobaTTU-2	IN	A	192.168.42.191
++YukobaTTU-3	IN	A	192.168.42.68
 +
-+101.43	IN	PTR	YukobaTTU-1.lockrify.ttu.
-+92.43	IN	PTR	YukobaTTU-2.lockrify.ttu.
-+197.43	IN	PTR	YukobaTTU-3.lockrify.ttu.
++105.42	IN	PTR	YukobaTTU-1.lockrify.ttu.
++191.42	IN	PTR	YukobaTTU-2.lockrify.ttu.
++68.42	IN	PTR	YukobaTTU-3.lockrify.ttu.
 
 changed: [YukobaTTU-3] => (item=168.192.in-addr.arpa)
 
@@ -294,30 +295,30 @@ TASK [bind : Install Bind Exporter] ********************************************
 The following NEW packages will be installed:
   prometheus-bind-exporter
 0 upgraded, 1 newly installed, 0 to remove and 264 not upgraded.
-changed: [YukobaTTU-3]
-The following NEW packages will be installed:
-  prometheus-bind-exporter
-0 upgraded, 1 newly installed, 0 to remove and 264 not upgraded.
 changed: [YukobaTTU-1]
 The following NEW packages will be installed:
   prometheus-bind-exporter
 0 upgraded, 1 newly installed, 0 to remove and 264 not upgraded.
 changed: [YukobaTTU-2]
+The following NEW packages will be installed:
+  prometheus-bind-exporter
+0 upgraded, 1 newly installed, 0 to remove and 264 not upgraded.
+changed: [YukobaTTU-3]
 
 TASK [bind : Enable and Start Bind9 and Exporter] ******************************
-ok: [YukobaTTU-3] => (item=bind9)
-ok: [YukobaTTU-1] => (item=bind9)
 ok: [YukobaTTU-2] => (item=bind9)
-ok: [YukobaTTU-3] => (item=prometheus-bind-exporter)
+ok: [YukobaTTU-1] => (item=bind9)
+ok: [YukobaTTU-3] => (item=bind9)
 ok: [YukobaTTU-2] => (item=prometheus-bind-exporter)
 ok: [YukobaTTU-1] => (item=prometheus-bind-exporter)
+ok: [YukobaTTU-3] => (item=prometheus-bind-exporter)
 
 TASK [bind : Run Handlers] *****************************************************
 
 RUNNING HANDLER [bind : Restart Bind9] *****************************************
-changed: [YukobaTTU-3]
 changed: [YukobaTTU-2]
 changed: [YukobaTTU-1]
+changed: [YukobaTTU-3]
 
 TASK [Add A Records] ***********************************************************
 skipping: [YukobaTTU-1] => (item={'key': 'backup', 'value': '192.168.42.132'}) 
@@ -357,7 +358,7 @@ ok: [YukobaTTU-1]
 
 TASK [config-dns : Template resolv.conf] ***************************************
 --- before: /etc/resolv.conf
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmp0jqt8ux2/resolv.conf.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpr1j2wi40/resolv.conf.j2
 @@ -1,19 +1,3 @@
 -# This file is managed by man:systemd-resolved(8). Do not edit.
 -#
@@ -379,12 +380,12 @@ TASK [config-dns : Template resolv.conf] ***************************************
 -options edns0 trust-ad
 -search openstacklocal
 +search lockrify.ttu
-+nameserver 192.168.43.101
-+nameserver 192.168.43.92
++nameserver 192.168.42.105
++nameserver 192.168.42.191
 
 changed: [YukobaTTU-2]
 --- before: /etc/resolv.conf
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpazdfp3ym/resolv.conf.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpy1jbuquk/resolv.conf.j2
 @@ -1,19 +1,3 @@
 -# This file is managed by man:systemd-resolved(8). Do not edit.
 -#
@@ -406,37 +407,37 @@ changed: [YukobaTTU-2]
 -options edns0 trust-ad
 -search openstacklocal
 +search lockrify.ttu
-+nameserver 192.168.43.101
-+nameserver 192.168.43.92
-
-changed: [YukobaTTU-3]
---- before: /etc/resolv.conf
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpc6f5azi0/resolv.conf.j2
-@@ -1,19 +1,3 @@
--# This file is managed by man:systemd-resolved(8). Do not edit.
--#
--# This is a dynamic resolv.conf file for connecting local clients to the
--# internal DNS stub resolver of systemd-resolved. This file lists all
--# configured search domains.
--#
--# Run "resolvectl status" to see details about the uplink DNS servers
--# currently in use.
--#
--# Third party programs must not access this file directly, but only through the
--# symlink at /etc/resolv.conf. To manage man:resolv.conf(5) in a different way,
--# replace this symlink by a static file or a different symlink.
--#
--# See man:systemd-resolved.service(8) for details about the supported modes of
--# operation for /etc/resolv.conf.
--
--nameserver 127.0.0.53
--options edns0 trust-ad
--search openstacklocal
-+search lockrify.ttu
-+nameserver 192.168.43.101
-+nameserver 192.168.43.92
++nameserver 192.168.42.105
++nameserver 192.168.42.191
 
 changed: [YukobaTTU-1]
+--- before: /etc/resolv.conf
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmppuyi0sgg/resolv.conf.j2
+@@ -1,19 +1,3 @@
+-# This file is managed by man:systemd-resolved(8). Do not edit.
+-#
+-# This is a dynamic resolv.conf file for connecting local clients to the
+-# internal DNS stub resolver of systemd-resolved. This file lists all
+-# configured search domains.
+-#
+-# Run "resolvectl status" to see details about the uplink DNS servers
+-# currently in use.
+-#
+-# Third party programs must not access this file directly, but only through the
+-# symlink at /etc/resolv.conf. To manage man:resolv.conf(5) in a different way,
+-# replace this symlink by a static file or a different symlink.
+-#
+-# See man:systemd-resolved.service(8) for details about the supported modes of
+-# operation for /etc/resolv.conf.
+-
+-nameserver 127.0.0.53
+-options edns0 trust-ad
+-search openstacklocal
++search lockrify.ttu
++nameserver 192.168.42.105
++nameserver 192.168.42.191
+
+changed: [YukobaTTU-3]
 
 PLAY [Prometheus Server] *******************************************************
 
@@ -463,11 +464,11 @@ changed: [YukobaTTU-3]
 
 TASK [prometheus : Edit Prometheus Service] ************************************
 --- before: /etc/default/prometheus
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmptcddhfwe/prometheus
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpweo5dzbn/prometheus
 @@ -1,5 +1,5 @@
  # Set the command-line arguments to pass to the server.
 -ARGS=""
-+ARGS="--web.external-url=http://192.168.43.150/prometheus"
++ARGS="--web.external-url=http://192.168.42.249/prometheus"
  
  # Prometheus supports the following options:
  #  --config.file="/etc/prometheus/prometheus.yml"
@@ -483,7 +484,7 @@ changed: [YukobaTTU-3]
 
 TASK [prometheus : Template prometheus.yml] ************************************
 --- before: /etc/prometheus/prometheus.yml
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmp0gkqxyu1/prometheus.yml
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmp27ypk9jz/prometheus.yml
 @@ -32,6 +32,7 @@
      scrape_timeout: 5s
  
@@ -595,7 +596,7 @@ The following NEW packages will be installed:
   mecab-utils mysql-client-8.0 mysql-client-core-8.0 mysql-common mysql-server
   mysql-server-8.0 mysql-server-core-8.0
 0 upgraded, 24 newly installed, 0 to remove and 264 not upgraded.
-changed: [YukobaTTU-1]
+changed: [YukobaTTU-2]
 The following additional packages will be installed:
   libcgi-fast-perl libcgi-pm-perl libencode-locale-perl libevent-core-2.1-7
   libevent-pthreads-2.1-7 libfcgi-perl libhtml-parser-perl libhtml-tagset-perl
@@ -613,7 +614,7 @@ The following NEW packages will be installed:
   mecab-utils mysql-client-8.0 mysql-client-core-8.0 mysql-common mysql-server
   mysql-server-8.0 mysql-server-core-8.0
 0 upgraded, 24 newly installed, 0 to remove and 264 not upgraded.
-changed: [YukobaTTU-2]
+changed: [YukobaTTU-1]
 
 TASK [mysql : Install Python] **************************************************
 Suggested packages:
@@ -631,7 +632,7 @@ changed: [YukobaTTU-1]
 
 TASK [mysql : Copy Override Config] ********************************************
 --- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpnap9weji/override.cnf.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpzto26y68/override.cnf.j2
 @@ -0,0 +1,7 @@
 +[mysqld]
 +bind-address = 0.0.0.0
@@ -639,12 +640,12 @@ TASK [mysql : Copy Override Config] ********************************************
 +log-bin = /var/log/mysql/mysql-bin.log
 +relay-log = /var/log/mysql/mysql-relay.log
 +replicate-do-db = agama
-+server-id = 348
++server-id = 191
 \ No newline at end of file
 
 changed: [YukobaTTU-2]
 --- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpbrjslhx8/override.cnf.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpab0o6hrd/override.cnf.j2
 @@ -0,0 +1,7 @@
 +[mysqld]
 +bind-address = 0.0.0.0
@@ -652,7 +653,7 @@ changed: [YukobaTTU-2]
 +log-bin = /var/log/mysql/mysql-bin.log
 +relay-log = /var/log/mysql/mysql-relay.log
 +replicate-do-db = agama
-+server-id = 357
++server-id = 105
 \ No newline at end of file
 
 changed: [YukobaTTU-1]
@@ -662,8 +663,8 @@ ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [mysql : MySQL Database] **************************************************
-changed: [YukobaTTU-1]
 changed: [YukobaTTU-2]
+changed: [YukobaTTU-1]
 
 TASK [mysql : Create MySQL User] ***********************************************
 changed: [YukobaTTU-1]
@@ -683,17 +684,17 @@ The following additional packages will be installed:
 The following NEW packages will be installed:
   daemon prometheus-mysqld-exporter
 0 upgraded, 2 newly installed, 0 to remove and 264 not upgraded.
-changed: [YukobaTTU-1]
+changed: [YukobaTTU-2]
 The following additional packages will be installed:
   daemon
 The following NEW packages will be installed:
   daemon prometheus-mysqld-exporter
 0 upgraded, 2 newly installed, 0 to remove and 264 not upgraded.
-changed: [YukobaTTU-2]
+changed: [YukobaTTU-1]
 
 TASK [mysql : Enable and Start MySQL Exporter] *********************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [mysql : Export Replica Status] *******************************************
 --- before: /etc/default/prometheus-mysqld-exporter
@@ -952,12 +953,12 @@ changed: [YukobaTTU-2]
 changed: [YukobaTTU-1]
 
 TASK [mysql : Add MySQL Replication User] **************************************
-changed: [YukobaTTU-1]
 changed: [YukobaTTU-2]
+changed: [YukobaTTU-1]
 
 TASK [mysql : Configure mysql dynamic variables for replica] *******************
-changed: [YukobaTTU-1]
 changed: [YukobaTTU-2]
+changed: [YukobaTTU-1]
 
 TASK [mysql : Create Restore Directory] ****************************************
 --- before
@@ -975,7 +976,7 @@ TASK [mysql : Create Restore Directory] ****************************************
 +    "state": "directory"
  }
 
-changed: [YukobaTTU-1]
+changed: [YukobaTTU-2]
 --- before
 +++ after
 @@ -1,7 +1,7 @@
@@ -991,7 +992,7 @@ changed: [YukobaTTU-1]
 +    "state": "directory"
  }
 
-changed: [YukobaTTU-2]
+changed: [YukobaTTU-1]
 
 TASK [mysql : Create Backup Directory] *****************************************
 --- before
@@ -1009,7 +1010,7 @@ TASK [mysql : Create Backup Directory] *****************************************
 +    "state": "directory"
  }
 
-changed: [YukobaTTU-1]
+changed: [YukobaTTU-2]
 --- before
 +++ after
 @@ -1,7 +1,7 @@
@@ -1025,7 +1026,7 @@ changed: [YukobaTTU-1]
 +    "state": "directory"
  }
 
-changed: [YukobaTTU-2]
+changed: [YukobaTTU-1]
 
 TASK [mysql : Create MySQL Backup User] ****************************************
 changed: [YukobaTTU-1]
@@ -1037,13 +1038,13 @@ changed: [YukobaTTU-1]
 
 TASK [mysql : Create MySQL Backup Cron] ****************************************
 --- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmptydjc22n/cron-mysql-backup.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpncoidonb/cron-mysql-backup.j2
 @@ -0,0 +1 @@
 +
 
 changed: [YukobaTTU-1]
 --- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpztsux3cu/cron-mysql-backup.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpolufs98v/cron-mysql-backup.j2
 @@ -0,0 +1,4 @@
 +0 20 * * * backup mysqldump agama > /home/backup/mysql/agama.sql
 +15 20 * * 0  backup  duplicity --no-encryption full /home/backup/mysql/ rsync://YukobaTTU@backup.lockrify.ttu/mysql --allow-source-mismatch
@@ -1055,16 +1056,16 @@ changed: [YukobaTTU-2]
 TASK [Add MySQL A Records] *****************************************************
 
 TASK [dns_record : Add A record] ***********************************************
-changed: [YukobaTTU-1] => (item=YukobaTTU-3)
-changed: [YukobaTTU-2] => (item=YukobaTTU-3)
-
-TASK [dns_record : Add A record] ***********************************************
 changed: [YukobaTTU-2] => (item=YukobaTTU-3)
 ok: [YukobaTTU-1] => (item=YukobaTTU-3)
 
+TASK [dns_record : Add A record] ***********************************************
+changed: [YukobaTTU-1] => (item=YukobaTTU-3)
+ok: [YukobaTTU-2] => (item=YukobaTTU-3)
+
 RUNNING HANDLER [mysql : Restart MySQL] ****************************************
-changed: [YukobaTTU-1]
 changed: [YukobaTTU-2]
+changed: [YukobaTTU-1]
 
 RUNNING HANDLER [mysql : Restart MySQL Exporter] *******************************
 changed: [YukobaTTU-2]
@@ -1117,7 +1118,7 @@ changed: [YukobaTTU-3]
 
 TASK [influxdb : Template influxdb.conf] ***************************************
 --- before: /etc/influxdb/influxdb.conf
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmp7zj1ioea/influxdb.conf.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpdeimet0i/influxdb.conf.j2
 @@ -1,596 +1,10 @@
 -### Welcome to the InfluxDB configuration file.
 -
@@ -1766,7 +1767,7 @@ changed: [YukobaTTU-3]
 
 TASK [influxdb : Create influxdb-stats-exporter Service] ***********************
 --- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmphvlegyic/influxdb-stats-exporter.service.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpxhmefea9/influxdb-stats-exporter.service.j2
 @@ -0,0 +1,10 @@
 +[Unit]
 +Description=Send InfluxDB Logs to Prometheus
@@ -1826,7 +1827,7 @@ changed: [YukobaTTU-3]
 
 TASK [influxdb : Create InfluxDB Backup Cron] **********************************
 --- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpy33r7bng/cron-influxdb-backup.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpnsv0w3zt/cron-influxdb-backup.j2
 @@ -0,0 +1,3 @@
 +0 21 * * * backup rm -rf /home/backup/influxdb/*; influxd backup -portable -database telegraf /home/backup/influxdb
 +15 21 * * 0  backup  duplicity --no-encryption full /home/backup/influxdb/ rsync://YukobaTTU@backup.lockrify.ttu/influxdb
@@ -1849,22 +1850,11 @@ changed: [YukobaTTU-3]
 PLAY [Docker Server] ***********************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [docker : Install Docker] *************************************************
-The following additional packages will be installed:
-  bridge-utils containerd dnsmasq-base libidn11 pigz python3-websocket runc
-  ubuntu-fan
-Suggested packages:
-  ifupdown aufs-tools cgroupfs-mount | cgroup-lite debootstrap docker-doc
-  rinse zfs-fuse | zfsutils
-The following NEW packages will be installed:
-  bridge-utils containerd dnsmasq-base docker.io libidn11 pigz python3-docker
-  python3-websocket runc ubuntu-fan
-0 upgraded, 10 newly installed, 0 to remove and 264 not upgraded.
-changed: [YukobaTTU-2]
 The following additional packages will be installed:
   bridge-utils containerd dnsmasq-base libidn11 pigz python3-websocket runc
   ubuntu-fan
@@ -1885,13 +1875,24 @@ Suggested packages:
 The following NEW packages will be installed:
   bridge-utils containerd dnsmasq-base docker.io libidn11 pigz python3-docker
   python3-websocket runc ubuntu-fan
+0 upgraded, 10 newly installed, 0 to remove and 264 not upgraded.
+changed: [YukobaTTU-2]
+The following additional packages will be installed:
+  bridge-utils containerd dnsmasq-base libidn11 pigz python3-websocket runc
+  ubuntu-fan
+Suggested packages:
+  ifupdown aufs-tools cgroupfs-mount | cgroup-lite debootstrap docker-doc
+  rinse zfs-fuse | zfsutils
+The following NEW packages will be installed:
+  bridge-utils containerd dnsmasq-base docker.io libidn11 pigz python3-docker
+  python3-websocket runc ubuntu-fan
 0 upgraded, 10 newly installed, 0 to remove and 265 not upgraded.
 changed: [YukobaTTU-3]
 
 TASK [docker : Start Docker] ***************************************************
 ok: [YukobaTTU-1]
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-3]
 
 PLAY [Pinger Server] ***********************************************************
 
@@ -1943,7 +1944,7 @@ changed: [YukobaTTU-3]
 
 TASK [pinger : Create systemd Service Unit File] *******************************
 --- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmp4e869vfy/pinger.service.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmp6ligpcrt/pinger.service.j2
 @@ -0,0 +1,10 @@
 +[Unit]
 +Description=Pinger Service
@@ -1976,7 +1977,7 @@ changed: [YukobaTTU-3]
 
 TASK [pinger : Copy pinger.conf] ***********************************************
 --- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmp9fwztwzk/pinger.conf.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmp63ldblo2/pinger.conf.j2
 @@ -0,0 +1,3 @@
 +database_url=localhost:8086
 +database_name=pingResults
@@ -2033,7 +2034,7 @@ changed: [YukobaTTU-3]
 
 TASK [grafana : Template dashboards.yaml] **************************************
 --- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpc9_0406n/dashboards.yaml
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmp6z251alz/dashboards.yaml
 @@ -0,0 +1,10 @@
 +apiVersion: 1
 +
@@ -2051,7 +2052,7 @@ changed: [YukobaTTU-3]
 
 TASK [grafana : Template datasources.yaml] *************************************
 --- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpspzvhoh1/datasources.yaml
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpbwdoi_2v/datasources.yaml
 @@ -0,0 +1,26 @@
 +apiVersion: 1
 +
@@ -5729,28 +5730,28 @@ changed: [YukobaTTU-1]
 TASK [agama : Start agama Docker Container] ************************************
 changed: [YukobaTTU-2] => (item=None)
 changed: [YukobaTTU-1] => (item=None)
-changed: [YukobaTTU-2] => (item=None)
 changed: [YukobaTTU-1] => (item=None)
 changed: [YukobaTTU-2] => (item=None)
-changed: [YukobaTTU-2]
 changed: [YukobaTTU-1] => (item=None)
 changed: [YukobaTTU-1]
+changed: [YukobaTTU-2] => (item=None)
+changed: [YukobaTTU-2]
 
 TASK [agama : List agama Containers] *******************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [agama : Stop unnecessary agama containers] *******************************
 
 TASK [Add agama A Records] *****************************************************
 
 TASK [dns_record : Add A record] ***********************************************
-changed: [YukobaTTU-1] => (item=YukobaTTU-3)
 changed: [YukobaTTU-2] => (item=YukobaTTU-3)
+changed: [YukobaTTU-1] => (item=YukobaTTU-3)
 
 TASK [dns_record : Add A record] ***********************************************
+changed: [YukobaTTU-2] => (item=YukobaTTU-3)
 changed: [YukobaTTU-1] => (item=YukobaTTU-3)
-ok: [YukobaTTU-2] => (item=YukobaTTU-3)
 
 PLAY [Nginx Server] ************************************************************
 
@@ -5773,7 +5774,7 @@ The following NEW packages will be installed:
   libnginx-mod-http-xslt-filter libnginx-mod-mail libnginx-mod-stream libtiff5
   libwebp6 libxpm4 nginx nginx-common nginx-core prometheus-nginx-exporter
 0 upgraded, 18 newly installed, 0 to remove and 264 not upgraded.
-changed: [YukobaTTU-2]
+changed: [YukobaTTU-1]
 The following additional packages will be installed:
   fontconfig-config fonts-dejavu-core libfontconfig1 libgd3 libjbig0
   libjpeg-turbo8 libjpeg8 libnginx-mod-http-image-filter
@@ -5787,7 +5788,7 @@ The following NEW packages will be installed:
   libnginx-mod-http-xslt-filter libnginx-mod-mail libnginx-mod-stream libtiff5
   libwebp6 libxpm4 nginx nginx-common nginx-core prometheus-nginx-exporter
 0 upgraded, 18 newly installed, 0 to remove and 264 not upgraded.
-changed: [YukobaTTU-1]
+changed: [YukobaTTU-2]
 The following additional packages will be installed:
   fontconfig-config fonts-dejavu-core libfontconfig1 libgd3 libjbig0
   libjpeg-turbo8 libjpeg8 libnginx-mod-http-image-filter
@@ -5805,7 +5806,221 @@ changed: [YukobaTTU-3]
 
 TASK [nginx : Template Nginx Config] *******************************************
 --- before: /etc/nginx/sites-enabled/default
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpiieay318/default.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpt59as4cb/default.j2
+@@ -1,91 +1,20 @@
+-##
+-# You should look at the following URL's in order to grasp a solid understanding
+-# of Nginx configuration files in order to fully unleash the power of Nginx.
+-# https://www.nginx.com/resources/wiki/start/
+-# https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/
+-# https://wiki.debian.org/Nginx/DirectoryStructure
+-#
+-# In most cases, administrators will remove this file from sites-enabled/ and
+-# leave it as reference inside of sites-available where it will continue to be
+-# updated by the nginx packaging team.
+-#
+-# This file will automatically load configuration files provided by other
+-# applications, such as Drupal or Wordpress. These applications will be made
+-# available underneath a path with that package name, such as /drupal8.
+-#
+-# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
+-##
+-
+-# Default server configuration
+-#
+ server {
+ 	listen 80 default_server;
+-	listen [::]:80 default_server;
+-
+-	# SSL configuration
+-	#
+-	# listen 443 ssl default_server;
+-	# listen [::]:443 ssl default_server;
+-	#
+-	# Note: You should disable gzip for SSL traffic.
+-	# See: https://bugs.debian.org/773332
+-	#
+-	# Read up on ssl_ciphers to ensure a secure configuration.
+-	# See: https://bugs.debian.org/765782
+-	#
+-	# Self signed certs generated by the ssl-cert package
+-	# Don't use them in a production server!
+-	#
+-	# include snippets/snakeoil.conf;
+-
+-	root /var/www/html;
+-
+-	# Add index.php to the list if you are using PHP
+-	index index.html index.htm index.nginx-debian.html;
+-
+ 	server_name _;
+ 
++    	
+ 	location / {
+-		# First attempt to serve request as file, then
+-		# as directory, then fall back to displaying a 404.
+-		try_files $uri $uri/ =404;
++	proxy_pass http://localhost:8001; 
++	proxy_set_header Host $http_host;
+ 	}
+ 
+-	# pass PHP scripts to FastCGI server
+-	#
+-	#location ~ \.php$ {
+-	#	include snippets/fastcgi-php.conf;
+-	#
+-	#	# With php-fpm (or other unix sockets):
+-	#	fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+-	#	# With php-cgi (or other tcp sockets):
+-	#	fastcgi_pass 127.0.0.1:9000;
+-	#}
+-
+-	# deny access to .htaccess files, if Apache's document root
+-	# concurs with nginx's one
+-	#
+-	#location ~ /\.ht {
+-	#	deny all;
+-	#}
++	
+ }
+ 
++server {
++	listen 8080 default_server;
+ 
+-# Virtual Host configuration for example.com
+-#
+-# You can move that to a different file under sites-available/ and symlink that
+-# to sites-enabled/ to enable it.
+-#
+-#server {
+-#	listen 80;
+-#	listen [::]:80;
+-#
+-#	server_name example.com;
+-#
+-#	root /var/www/example.com;
+-#	index index.html;
+-#
+-#	location / {
+-#		try_files $uri $uri/ =404;
+-#	}
+-#}
++	location = /stub_status {
++		stub_status;
++	}
++}
+\ No newline at end of file
+
+changed: [YukobaTTU-2]
+--- before: /etc/nginx/sites-enabled/default
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmp31i4_igq/default.j2
+@@ -1,91 +1,20 @@
+-##
+-# You should look at the following URL's in order to grasp a solid understanding
+-# of Nginx configuration files in order to fully unleash the power of Nginx.
+-# https://www.nginx.com/resources/wiki/start/
+-# https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/
+-# https://wiki.debian.org/Nginx/DirectoryStructure
+-#
+-# In most cases, administrators will remove this file from sites-enabled/ and
+-# leave it as reference inside of sites-available where it will continue to be
+-# updated by the nginx packaging team.
+-#
+-# This file will automatically load configuration files provided by other
+-# applications, such as Drupal or Wordpress. These applications will be made
+-# available underneath a path with that package name, such as /drupal8.
+-#
+-# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
+-##
+-
+-# Default server configuration
+-#
+ server {
+ 	listen 80 default_server;
+-	listen [::]:80 default_server;
+-
+-	# SSL configuration
+-	#
+-	# listen 443 ssl default_server;
+-	# listen [::]:443 ssl default_server;
+-	#
+-	# Note: You should disable gzip for SSL traffic.
+-	# See: https://bugs.debian.org/773332
+-	#
+-	# Read up on ssl_ciphers to ensure a secure configuration.
+-	# See: https://bugs.debian.org/765782
+-	#
+-	# Self signed certs generated by the ssl-cert package
+-	# Don't use them in a production server!
+-	#
+-	# include snippets/snakeoil.conf;
+-
+-	root /var/www/html;
+-
+-	# Add index.php to the list if you are using PHP
+-	index index.html index.htm index.nginx-debian.html;
+-
+ 	server_name _;
+ 
++    	
+ 	location / {
+-		# First attempt to serve request as file, then
+-		# as directory, then fall back to displaying a 404.
+-		try_files $uri $uri/ =404;
++	proxy_pass http://localhost:8001; 
++	proxy_set_header Host $http_host;
+ 	}
+ 
+-	# pass PHP scripts to FastCGI server
+-	#
+-	#location ~ \.php$ {
+-	#	include snippets/fastcgi-php.conf;
+-	#
+-	#	# With php-fpm (or other unix sockets):
+-	#	fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+-	#	# With php-cgi (or other tcp sockets):
+-	#	fastcgi_pass 127.0.0.1:9000;
+-	#}
+-
+-	# deny access to .htaccess files, if Apache's document root
+-	# concurs with nginx's one
+-	#
+-	#location ~ /\.ht {
+-	#	deny all;
+-	#}
++	
+ }
+ 
++server {
++	listen 8080 default_server;
+ 
+-# Virtual Host configuration for example.com
+-#
+-# You can move that to a different file under sites-available/ and symlink that
+-# to sites-enabled/ to enable it.
+-#
+-#server {
+-#	listen 80;
+-#	listen [::]:80;
+-#
+-#	server_name example.com;
+-#
+-#	root /var/www/example.com;
+-#	index index.html;
+-#
+-#	location / {
+-#		try_files $uri $uri/ =404;
+-#	}
+-#}
++	location = /stub_status {
++		stub_status;
++	}
++}
+\ No newline at end of file
+
+changed: [YukobaTTU-1]
+--- before: /etc/nginx/sites-enabled/default
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpwjz575i7/default.j2
 @@ -1,91 +1,24 @@
 -##
 -# You should look at the following URL's in order to grasp a solid understanding
@@ -5915,238 +6130,24 @@ TASK [nginx : Template Nginx Config] *******************************************
 \ No newline at end of file
 
 changed: [YukobaTTU-3]
---- before: /etc/nginx/sites-enabled/default
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmplvmk8k7q/default.j2
-@@ -1,91 +1,20 @@
--##
--# You should look at the following URL's in order to grasp a solid understanding
--# of Nginx configuration files in order to fully unleash the power of Nginx.
--# https://www.nginx.com/resources/wiki/start/
--# https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/
--# https://wiki.debian.org/Nginx/DirectoryStructure
--#
--# In most cases, administrators will remove this file from sites-enabled/ and
--# leave it as reference inside of sites-available where it will continue to be
--# updated by the nginx packaging team.
--#
--# This file will automatically load configuration files provided by other
--# applications, such as Drupal or Wordpress. These applications will be made
--# available underneath a path with that package name, such as /drupal8.
--#
--# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
--##
--
--# Default server configuration
--#
- server {
- 	listen 80 default_server;
--	listen [::]:80 default_server;
--
--	# SSL configuration
--	#
--	# listen 443 ssl default_server;
--	# listen [::]:443 ssl default_server;
--	#
--	# Note: You should disable gzip for SSL traffic.
--	# See: https://bugs.debian.org/773332
--	#
--	# Read up on ssl_ciphers to ensure a secure configuration.
--	# See: https://bugs.debian.org/765782
--	#
--	# Self signed certs generated by the ssl-cert package
--	# Don't use them in a production server!
--	#
--	# include snippets/snakeoil.conf;
--
--	root /var/www/html;
--
--	# Add index.php to the list if you are using PHP
--	index index.html index.htm index.nginx-debian.html;
--
- 	server_name _;
- 
-+    	
- 	location / {
--		# First attempt to serve request as file, then
--		# as directory, then fall back to displaying a 404.
--		try_files $uri $uri/ =404;
-+	proxy_pass http://localhost:8001; 
-+	proxy_set_header Host $http_host;
- 	}
- 
--	# pass PHP scripts to FastCGI server
--	#
--	#location ~ \.php$ {
--	#	include snippets/fastcgi-php.conf;
--	#
--	#	# With php-fpm (or other unix sockets):
--	#	fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
--	#	# With php-cgi (or other tcp sockets):
--	#	fastcgi_pass 127.0.0.1:9000;
--	#}
--
--	# deny access to .htaccess files, if Apache's document root
--	# concurs with nginx's one
--	#
--	#location ~ /\.ht {
--	#	deny all;
--	#}
-+	
- }
- 
-+server {
-+	listen 8080 default_server;
- 
--# Virtual Host configuration for example.com
--#
--# You can move that to a different file under sites-available/ and symlink that
--# to sites-enabled/ to enable it.
--#
--#server {
--#	listen 80;
--#	listen [::]:80;
--#
--#	server_name example.com;
--#
--#	root /var/www/example.com;
--#	index index.html;
--#
--#	location / {
--#		try_files $uri $uri/ =404;
--#	}
--#}
-+	location = /stub_status {
-+		stub_status;
-+	}
-+}
-\ No newline at end of file
-
-changed: [YukobaTTU-1]
---- before: /etc/nginx/sites-enabled/default
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpkwuaekny/default.j2
-@@ -1,91 +1,20 @@
--##
--# You should look at the following URL's in order to grasp a solid understanding
--# of Nginx configuration files in order to fully unleash the power of Nginx.
--# https://www.nginx.com/resources/wiki/start/
--# https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/
--# https://wiki.debian.org/Nginx/DirectoryStructure
--#
--# In most cases, administrators will remove this file from sites-enabled/ and
--# leave it as reference inside of sites-available where it will continue to be
--# updated by the nginx packaging team.
--#
--# This file will automatically load configuration files provided by other
--# applications, such as Drupal or Wordpress. These applications will be made
--# available underneath a path with that package name, such as /drupal8.
--#
--# Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
--##
--
--# Default server configuration
--#
- server {
- 	listen 80 default_server;
--	listen [::]:80 default_server;
--
--	# SSL configuration
--	#
--	# listen 443 ssl default_server;
--	# listen [::]:443 ssl default_server;
--	#
--	# Note: You should disable gzip for SSL traffic.
--	# See: https://bugs.debian.org/773332
--	#
--	# Read up on ssl_ciphers to ensure a secure configuration.
--	# See: https://bugs.debian.org/765782
--	#
--	# Self signed certs generated by the ssl-cert package
--	# Don't use them in a production server!
--	#
--	# include snippets/snakeoil.conf;
--
--	root /var/www/html;
--
--	# Add index.php to the list if you are using PHP
--	index index.html index.htm index.nginx-debian.html;
--
- 	server_name _;
- 
-+    	
- 	location / {
--		# First attempt to serve request as file, then
--		# as directory, then fall back to displaying a 404.
--		try_files $uri $uri/ =404;
-+	proxy_pass http://localhost:8001; 
-+	proxy_set_header Host $http_host;
- 	}
- 
--	# pass PHP scripts to FastCGI server
--	#
--	#location ~ \.php$ {
--	#	include snippets/fastcgi-php.conf;
--	#
--	#	# With php-fpm (or other unix sockets):
--	#	fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
--	#	# With php-cgi (or other tcp sockets):
--	#	fastcgi_pass 127.0.0.1:9000;
--	#}
--
--	# deny access to .htaccess files, if Apache's document root
--	# concurs with nginx's one
--	#
--	#location ~ /\.ht {
--	#	deny all;
--	#}
-+	
- }
- 
-+server {
-+	listen 8080 default_server;
- 
--# Virtual Host configuration for example.com
--#
--# You can move that to a different file under sites-available/ and symlink that
--# to sites-enabled/ to enable it.
--#
--#server {
--#	listen 80;
--#	listen [::]:80;
--#
--#	server_name example.com;
--#
--#	root /var/www/example.com;
--#	index index.html;
--#
--#	location / {
--#		try_files $uri $uri/ =404;
--#	}
--#}
-+	location = /stub_status {
-+		stub_status;
-+	}
-+}
-\ No newline at end of file
-
-changed: [YukobaTTU-2]
 
 TASK [nginx : Enable and Start Nginx Service] **********************************
-ok: [YukobaTTU-3] => (item=nginx)
-ok: [YukobaTTU-2] => (item=nginx)
 ok: [YukobaTTU-1] => (item=nginx)
-changed: [YukobaTTU-3] => (item=prometheus-nginx-exporter)
-changed: [YukobaTTU-2] => (item=prometheus-nginx-exporter)
+ok: [YukobaTTU-2] => (item=nginx)
+ok: [YukobaTTU-3] => (item=nginx)
 changed: [YukobaTTU-1] => (item=prometheus-nginx-exporter)
+changed: [YukobaTTU-2] => (item=prometheus-nginx-exporter)
+changed: [YukobaTTU-3] => (item=prometheus-nginx-exporter)
 
 RUNNING HANDLER [nginx : Restart Nginx] ****************************************
-changed: [YukobaTTU-3]
 changed: [YukobaTTU-2]
 changed: [YukobaTTU-1]
+changed: [YukobaTTU-3]
 
 RUNNING HANDLER [nginx : Restart Nginx Exporter] *******************************
-changed: [YukobaTTU-3]
 changed: [YukobaTTU-2]
 changed: [YukobaTTU-1]
+changed: [YukobaTTU-3]
 
 PLAY [HAProxy] *****************************************************************
 
@@ -6175,16 +6176,16 @@ changed: [YukobaTTU-2]
 TASK [Add HAProxy A Records] ***************************************************
 
 TASK [dns_record : Add A record] ***********************************************
-changed: [YukobaTTU-2] => (item=YukobaTTU-3)
 changed: [YukobaTTU-1] => (item=YukobaTTU-3)
+ok: [YukobaTTU-2] => (item=YukobaTTU-3)
 
 TASK [dns_record : Add A record] ***********************************************
-changed: [YukobaTTU-2] => (item=YukobaTTU-3)
-ok: [YukobaTTU-1] => (item=YukobaTTU-3)
+ok: [YukobaTTU-2] => (item=YukobaTTU-3)
+changed: [YukobaTTU-1] => (item=YukobaTTU-3)
 
 TASK [haproxy : Template haproxy.cfg] ******************************************
 --- before: /etc/haproxy/haproxy.cfg
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpphvlkh7t/haproxy.cfg.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpd3xw1flv/haproxy.cfg.j2
 @@ -1,34 +1,45 @@
  global
 -	log /dev/log	local0
@@ -6261,7 +6262,7 @@ TASK [haproxy : Template haproxy.cfg] ******************************************
 
 changed: [YukobaTTU-2]
 --- before: /etc/haproxy/haproxy.cfg
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpg30n1_35/haproxy.cfg.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmp2lcju1d_/haproxy.cfg.j2
 @@ -1,34 +1,45 @@
  global
 -	log /dev/log	local0
@@ -6339,8 +6340,8 @@ changed: [YukobaTTU-2]
 changed: [YukobaTTU-1]
 
 TASK [haproxy : Start HAProxy] *************************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [haproxy : Install HAProxy Exporter] **************************************
 The following NEW packages will be installed:
@@ -6353,12 +6354,12 @@ The following NEW packages will be installed:
 changed: [YukobaTTU-1]
 
 TASK [haproxy : Enable and Start HAProxy Exporter] *****************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [haproxy : Configure HAProxy Exporter] ************************************
 --- before: /etc/default/prometheus-haproxy-exporter
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpa3p26fcm/prometheus-haproxy-exporter
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpxf0_dro9/prometheus-haproxy-exporter
 @@ -2,7 +2,7 @@
  # Due to shell scaping, to pass backslashes for regexes, you need to double
  # them (\\d for \d). If running under systemd, you need to double them again
@@ -6378,7 +6379,7 @@ TASK [haproxy : Configure HAProxy Exporter] ************************************
 
 changed: [YukobaTTU-2]
 --- before: /etc/default/prometheus-haproxy-exporter
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpcgwk2v3t/prometheus-haproxy-exporter
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmp1h7jrxqq/prometheus-haproxy-exporter
 @@ -2,7 +2,7 @@
  # Due to shell scaping, to pass backslashes for regexes, you need to double
  # them (\\d for \d). If running under systemd, you need to double them again
@@ -6430,7 +6431,7 @@ The following NEW packages will be installed:
   ipvsadm keepalived libmysqlclient21 libnl-3-200 libnl-genl-3-200
   libsensors-config libsensors5 libsnmp-base libsnmp35
 0 upgraded, 9 newly installed, 0 to remove and 264 not upgraded.
-changed: [YukobaTTU-2]
+changed: [YukobaTTU-1]
 The following additional packages will be installed:
   ipvsadm libmysqlclient21 libnl-3-200 libnl-genl-3-200 libsensors-config
   libsensors5 libsnmp-base libsnmp35
@@ -6440,11 +6441,11 @@ The following NEW packages will be installed:
   ipvsadm keepalived libmysqlclient21 libnl-3-200 libnl-genl-3-200
   libsensors-config libsensors5 libsnmp-base libsnmp35
 0 upgraded, 9 newly installed, 0 to remove and 264 not upgraded.
-changed: [YukobaTTU-1]
+changed: [YukobaTTU-2]
 
 TASK [keepalived : Create keepalived_script User] ******************************
-changed: [YukobaTTU-1]
 changed: [YukobaTTU-2]
+changed: [YukobaTTU-1]
 
 TASK [keepalived : Copy keepalived_script] *************************************
 --- before
@@ -6466,46 +6467,7 @@ changed: [YukobaTTU-1]
 
 TASK [keepalived : Copy keepalived.conf] ***************************************
 --- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmp_yblt30x/keepalived.conf.j2
-@@ -0,0 +1,34 @@
-+global_defs {
-+   enable_script_security
-+   script_user keepalived_script
-+}
-+
-+vrrp_script check_haproxy {                 
-+    script "/home/keepalived_script/keepalived_script" 
-+    weight 20                              
-+    interval 1               
-+}
-+vrrp_instance VI_1 {             
-+    interface ens3
-+    virtual_router_id 51
-+    advert_int 1
-+    preempt                            
-+    
-+    priority 90
-+    
-+    virtual_ipaddress {                     
-+        192.168.101.101/24
-+    }
-+    unicast_peer {
-+        
-+        
-+        192.168.43.101
-+                
-+                
-+        
-+        192.168.43.197
-+                    }
-+    track_script {
-+        check_haproxy
-+    }
-+}
-
-changed: [YukobaTTU-2]
---- before
-+++ after: /home/mando/.ansible/tmp/ansible-local-26716g5rhar7y/tmpvfwma8bw/keepalived.conf.j2
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpf128fzg6/keepalived.conf.j2
 @@ -0,0 +1,34 @@
 +global_defs {
 +   enable_script_security
@@ -6526,16 +6488,16 @@ changed: [YukobaTTU-2]
 +    priority 100
 +    
 +    virtual_ipaddress {                     
-+        192.168.101.101/24
++        192.168.100.105/24
 +    }
 +    unicast_peer {
 +        
 +                
 +        
-+        192.168.43.92
++        192.168.42.191
 +                
 +        
-+        192.168.43.197
++        192.168.42.68
 +                    }
 +    track_script {
 +        check_haproxy
@@ -6543,6 +6505,45 @@ changed: [YukobaTTU-2]
 +}
 
 changed: [YukobaTTU-1]
+--- before
++++ after: /home/mando/.ansible/tmp/ansible-local-319014_1vv1hk/tmpoj1let4p/keepalived.conf.j2
+@@ -0,0 +1,34 @@
++global_defs {
++   enable_script_security
++   script_user keepalived_script
++}
++
++vrrp_script check_haproxy {                 
++    script "/home/keepalived_script/keepalived_script" 
++    weight 20                              
++    interval 1               
++}
++vrrp_instance VI_1 {             
++    interface ens3
++    virtual_router_id 51
++    advert_int 1
++    preempt                            
++    
++    priority 90
++    
++    virtual_ipaddress {                     
++        192.168.100.105/24
++    }
++    unicast_peer {
++        
++        
++        192.168.42.105
++                
++                
++        
++        192.168.42.68
++                    }
++    track_script {
++        check_haproxy
++    }
++}
+
+changed: [YukobaTTU-2]
 
 TASK [keepalived : Enable and Start Keepalived] ********************************
 changed: [YukobaTTU-2]
@@ -6568,7 +6569,7 @@ TASK [keepalived : Create keepalived-exporter service] *************************
 +WantedBy=multi-user.target
 \ No newline at end of file
 
-changed: [YukobaTTU-2]
+changed: [YukobaTTU-1]
 --- before
 +++ after: /home/mando/Documents/ica0002/roles/keepalived/files/keepalived-exporter.service
 @@ -0,0 +1,10 @@
@@ -6584,23 +6585,23 @@ changed: [YukobaTTU-2]
 +WantedBy=multi-user.target
 \ No newline at end of file
 
-changed: [YukobaTTU-1]
+changed: [YukobaTTU-2]
 
 TASK [keepalived : Restart systemctl daemon] ***********************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [keepalived : Enable and Start keepalived-exporter service] ***************
-changed: [YukobaTTU-2]
 changed: [YukobaTTU-1]
+changed: [YukobaTTU-2]
 
 RUNNING HANDLER [keepalived : Restart Keepalived] ******************************
-changed: [YukobaTTU-2]
 changed: [YukobaTTU-1]
+changed: [YukobaTTU-2]
 
 PLAY RECAP *********************************************************************
 YukobaTTU-1                : ok=83   changed=62   unreachable=0    failed=0    skipped=5    rescued=0    ignored=0   
-YukobaTTU-2                : ok=83   changed=63   unreachable=0    failed=0    skipped=5    rescued=0    ignored=0   
+YukobaTTU-2                : ok=83   changed=61   unreachable=0    failed=0    skipped=5    rescued=0    ignored=0   
 YukobaTTU-3                : ok=79   changed=66   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 
 + ansible-playbook infra.yaml --diff
@@ -6608,8 +6609,8 @@ YukobaTTU-3                : ok=79   changed=66   unreachable=0    failed=0    s
 PLAY [Initial setup] ***********************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 ok: [YukobaTTU-3]
 
 TASK [init : Update APT cache] *************************************************
@@ -6618,24 +6619,24 @@ ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
 
 TASK [init : Download Certificates] ********************************************
-ok: [YukobaTTU-2]
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-3]
+ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [init : Install Prometheus Node Exporter] *********************************
 ok: [YukobaTTU-2]
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-3]
+ok: [YukobaTTU-1]
 
 TASK [init : Copy rsyslog Config] **********************************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-3]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 
 TASK [init : Create Backup User] ***********************************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
 ok: [YukobaTTU-3]
+ok: [YukobaTTU-1]
 
 TASK [init : Template known_hosts] *********************************************
 ok: [YukobaTTU-2]
@@ -6644,36 +6645,36 @@ ok: [YukobaTTU-3]
 
 TASK [init : Install Duplicity] ************************************************
 ok: [YukobaTTU-2]
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-3]
 
 TASK [init : Install dnspython] ************************************************
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
 
 PLAY [Bind Server] *************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-3]
+ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [bind : Install Bind9] ****************************************************
+ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
 ok: [YukobaTTU-3]
-ok: [YukobaTTU-1]
 
 TASK [bind : Template Bind9 Config] ********************************************
-ok: [YukobaTTU-3] => (item=None)
 ok: [YukobaTTU-2] => (item=None)
 ok: [YukobaTTU-1] => (item=None)
+ok: [YukobaTTU-3] => (item=None)
 ok: [YukobaTTU-2] => (item=None)
 ok: [YukobaTTU-2]
-ok: [YukobaTTU-3] => (item=None)
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-1] => (item=None)
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-3] => (item=None)
+ok: [YukobaTTU-3]
 
 TASK [bind : Template Master Zone Config] **************************************
 skipping: [YukobaTTU-1] => (item=lockrify.ttu) 
@@ -6690,11 +6691,11 @@ ok: [YukobaTTU-3]
 
 TASK [bind : Enable and Start Bind9 and Exporter] ******************************
 ok: [YukobaTTU-2] => (item=bind9)
-ok: [YukobaTTU-3] => (item=bind9)
 ok: [YukobaTTU-1] => (item=bind9)
+ok: [YukobaTTU-3] => (item=bind9)
 ok: [YukobaTTU-2] => (item=prometheus-bind-exporter)
-ok: [YukobaTTU-3] => (item=prometheus-bind-exporter)
 ok: [YukobaTTU-1] => (item=prometheus-bind-exporter)
+ok: [YukobaTTU-3] => (item=prometheus-bind-exporter)
 
 TASK [bind : Run Handlers] *****************************************************
 
@@ -6730,14 +6731,14 @@ ok: [YukobaTTU-3] => (item=YukobaTTU-3)
 PLAY [DNS Config] **************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
 
 TASK [config-dns : Template resolv.conf] ***************************************
 ok: [YukobaTTU-1]
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-3]
 
 PLAY [Prometheus Server] *******************************************************
 
@@ -6793,8 +6794,8 @@ ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [mysql : Template exporter_my.cnf] ****************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [mysql : Install MySQL Exporter] ******************************************
 ok: [YukobaTTU-2]
@@ -6805,8 +6806,8 @@ ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [mysql : Export Replica Status] *******************************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 
 TASK [mysql : Add MySQL Replication User] **************************************
 ok: [YukobaTTU-2]
@@ -6817,20 +6818,20 @@ ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
 
 TASK [mysql : Create Restore Directory] ****************************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 
 TASK [mysql : Create Backup Directory] *****************************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 
 TASK [mysql : Create MySQL Backup User] ****************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [mysql : Template backup_my.cnf] ******************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [mysql : Create MySQL Backup Cron] ****************************************
 ok: [YukobaTTU-2]
@@ -6843,8 +6844,8 @@ ok: [YukobaTTU-2] => (item=YukobaTTU-3)
 ok: [YukobaTTU-1] => (item=YukobaTTU-3)
 
 TASK [dns_record : Add A record] ***********************************************
-ok: [YukobaTTU-2] => (item=YukobaTTU-3)
 ok: [YukobaTTU-1] => (item=YukobaTTU-3)
+ok: [YukobaTTU-2] => (item=YukobaTTU-3)
 
 PLAY [InfluxDB] ****************************************************************
 
@@ -6913,19 +6914,19 @@ ok: [YukobaTTU-3] => (item=YukobaTTU-3)
 PLAY [Docker Server] ***********************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
 
 TASK [docker : Install Docker] *************************************************
 ok: [YukobaTTU-2]
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-3]
 
 TASK [docker : Start Docker] ***************************************************
 ok: [YukobaTTU-2]
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-3]
+ok: [YukobaTTU-1]
 
 PLAY [Pinger Server] ***********************************************************
 
@@ -6994,24 +6995,24 @@ ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [agama : Create agama Directory] ******************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [agama : Download agama Files] ********************************************
-ok: [YukobaTTU-2] => (item=agama.py)
 ok: [YukobaTTU-1] => (item=agama.py)
+ok: [YukobaTTU-2] => (item=agama.py)
 ok: [YukobaTTU-2] => (item=Dockerfile)
 ok: [YukobaTTU-1] => (item=Dockerfile)
 
 TASK [agama : Create agama Docker Image] ***************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [agama : Start agama Docker Container] ************************************
-ok: [YukobaTTU-2] => (item=None)
 ok: [YukobaTTU-1] => (item=None)
 ok: [YukobaTTU-2] => (item=None)
 ok: [YukobaTTU-1] => (item=None)
+ok: [YukobaTTU-2] => (item=None)
 ok: [YukobaTTU-2] => (item=None)
 ok: [YukobaTTU-2]
 ok: [YukobaTTU-1] => (item=None)
@@ -7026,8 +7027,8 @@ TASK [agama : Stop unnecessary agama containers] *******************************
 TASK [Add agama A Records] *****************************************************
 
 TASK [dns_record : Add A record] ***********************************************
-ok: [YukobaTTU-2] => (item=YukobaTTU-3)
 ok: [YukobaTTU-1] => (item=YukobaTTU-3)
+ok: [YukobaTTU-2] => (item=YukobaTTU-3)
 
 TASK [dns_record : Add A record] ***********************************************
 ok: [YukobaTTU-2] => (item=YukobaTTU-3)
@@ -7037,26 +7038,26 @@ PLAY [Nginx Server] ************************************************************
 
 TASK [Gathering Facts] *********************************************************
 ok: [YukobaTTU-2]
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-3]
 
 TASK [nginx : Install Nginx] ***************************************************
-ok: [YukobaTTU-2]
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-3]
+ok: [YukobaTTU-2]
 
 TASK [nginx : Template Nginx Config] *******************************************
 ok: [YukobaTTU-2]
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-3]
 
 TASK [nginx : Enable and Start Nginx Service] **********************************
 ok: [YukobaTTU-2] => (item=nginx)
-ok: [YukobaTTU-1] => (item=nginx)
 ok: [YukobaTTU-3] => (item=nginx)
+ok: [YukobaTTU-1] => (item=nginx)
 ok: [YukobaTTU-2] => (item=prometheus-nginx-exporter)
-ok: [YukobaTTU-1] => (item=prometheus-nginx-exporter)
 ok: [YukobaTTU-3] => (item=prometheus-nginx-exporter)
+ok: [YukobaTTU-1] => (item=prometheus-nginx-exporter)
 
 PLAY [HAProxy] *****************************************************************
 
@@ -7065,8 +7066,8 @@ ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [haproxy : Install HAProxy] ***********************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [Add HAProxy A Records] ***************************************************
 
@@ -7075,28 +7076,28 @@ ok: [YukobaTTU-2] => (item=YukobaTTU-3)
 ok: [YukobaTTU-1] => (item=YukobaTTU-3)
 
 TASK [dns_record : Add A record] ***********************************************
-ok: [YukobaTTU-2] => (item=YukobaTTU-3)
 ok: [YukobaTTU-1] => (item=YukobaTTU-3)
+ok: [YukobaTTU-2] => (item=YukobaTTU-3)
 
 TASK [haproxy : Template haproxy.cfg] ******************************************
 ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [haproxy : Start HAProxy] *************************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [haproxy : Install HAProxy Exporter] **************************************
 ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [haproxy : Enable and Start HAProxy Exporter] *****************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 
 TASK [haproxy : Configure HAProxy Exporter] ************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 PLAY [Keepalived] **************************************************************
 
@@ -7133,16 +7134,16 @@ ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [keepalived : Download Keepalived Exporter] *******************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [keepalived : Create keepalived-exporter service] *************************
 ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [keepalived : Restart systemctl daemon] ***********************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [keepalived : Enable and Start keepalived-exporter service] ***************
 ok: [YukobaTTU-2]
@@ -7154,19 +7155,19 @@ YukobaTTU-2                : ok=73   changed=0    unreachable=0    failed=0    s
 YukobaTTU-3                : ok=71   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 
 + ansible all -b -m reboot -a test_command=uptime
+YukobaTTU-2 | CHANGED => {
+    "changed": true,
+    "elapsed": 42,
+    "rebooted": true
+}
 YukobaTTU-3 | CHANGED => {
     "changed": true,
-    "elapsed": 40,
+    "elapsed": 46,
     "rebooted": true
 }
 YukobaTTU-1 | CHANGED => {
     "changed": true,
-    "elapsed": 41,
-    "rebooted": true
-}
-YukobaTTU-2 | CHANGED => {
-    "changed": true,
-    "elapsed": 41,
+    "elapsed": 52,
     "rebooted": true
 }
 + ansible-playbook infra.yaml --diff
@@ -7174,72 +7175,72 @@ YukobaTTU-2 | CHANGED => {
 PLAY [Initial setup] ***********************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-3]
+ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [init : Update APT cache] *************************************************
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
 
 TASK [init : Download Certificates] ********************************************
 ok: [YukobaTTU-3]
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [init : Install Prometheus Node Exporter] *********************************
+ok: [YukobaTTU-1]
 ok: [YukobaTTU-3]
 ok: [YukobaTTU-2]
-ok: [YukobaTTU-1]
 
 TASK [init : Copy rsyslog Config] **********************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [init : Create Backup User] ***********************************************
-ok: [YukobaTTU-2]
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-3]
+ok: [YukobaTTU-2]
 
 TASK [init : Template known_hosts] *********************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [init : Install Duplicity] ************************************************
-ok: [YukobaTTU-2]
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-3]
+ok: [YukobaTTU-2]
 
 TASK [init : Install dnspython] ************************************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 ok: [YukobaTTU-3]
 
 PLAY [Bind Server] *************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [YukobaTTU-2]
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-3]
+ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [bind : Install Bind9] ****************************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-3]
+ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [bind : Template Bind9 Config] ********************************************
-ok: [YukobaTTU-1] => (item=None)
 ok: [YukobaTTU-3] => (item=None)
 ok: [YukobaTTU-2] => (item=None)
 ok: [YukobaTTU-1] => (item=None)
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2] => (item=None)
 ok: [YukobaTTU-2]
 ok: [YukobaTTU-3] => (item=None)
 ok: [YukobaTTU-3]
+ok: [YukobaTTU-1] => (item=None)
+ok: [YukobaTTU-1]
 
 TASK [bind : Template Master Zone Config] **************************************
 skipping: [YukobaTTU-1] => (item=lockrify.ttu) 
@@ -7250,17 +7251,17 @@ ok: [YukobaTTU-3] => (item=lockrify.ttu)
 ok: [YukobaTTU-3] => (item=168.192.in-addr.arpa)
 
 TASK [bind : Install Bind Exporter] ********************************************
-ok: [YukobaTTU-2]
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-3]
+ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [bind : Enable and Start Bind9 and Exporter] ******************************
 ok: [YukobaTTU-1] => (item=bind9)
-ok: [YukobaTTU-3] => (item=bind9)
 ok: [YukobaTTU-2] => (item=bind9)
-ok: [YukobaTTU-3] => (item=prometheus-bind-exporter)
-ok: [YukobaTTU-1] => (item=prometheus-bind-exporter)
+ok: [YukobaTTU-3] => (item=bind9)
 ok: [YukobaTTU-2] => (item=prometheus-bind-exporter)
+ok: [YukobaTTU-1] => (item=prometheus-bind-exporter)
+ok: [YukobaTTU-3] => (item=prometheus-bind-exporter)
 
 TASK [bind : Run Handlers] *****************************************************
 
@@ -7296,13 +7297,13 @@ ok: [YukobaTTU-3] => (item=YukobaTTU-3)
 PLAY [DNS Config] **************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [YukobaTTU-2]
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-3]
+ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [config-dns : Template resolv.conf] ***************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 ok: [YukobaTTU-3]
 
 PLAY [Prometheus Server] *******************************************************
@@ -7327,24 +7328,24 @@ ok: [YukobaTTU-3] => (item=YukobaTTU-3)
 PLAY [Database Server] *********************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [mysql : Install MySQL Server] ********************************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 
 TASK [mysql : Install Python] **************************************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 
 TASK [mysql : Copy Override Config] ********************************************
 ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [mysql : Enable and Start MySQL Server] ***********************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 
 TASK [mysql : MySQL Database] **************************************************
 ok: [YukobaTTU-1]
@@ -7367,46 +7368,46 @@ ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [mysql : Enable and Start MySQL Exporter] *********************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [mysql : Export Replica Status] *******************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [mysql : Add MySQL Replication User] **************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [mysql : Configure mysql dynamic variables for replica] *******************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [mysql : Create Restore Directory] ****************************************
 ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
 
 TASK [mysql : Create Backup Directory] *****************************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 
 TASK [mysql : Create MySQL Backup User] ****************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [mysql : Template backup_my.cnf] ******************************************
 ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [mysql : Create MySQL Backup Cron] ****************************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 
 TASK [Add MySQL A Records] *****************************************************
 
 TASK [dns_record : Add A record] ***********************************************
-ok: [YukobaTTU-1] => (item=YukobaTTU-3)
 ok: [YukobaTTU-2] => (item=YukobaTTU-3)
+ok: [YukobaTTU-1] => (item=YukobaTTU-3)
 
 TASK [dns_record : Add A record] ***********************************************
 ok: [YukobaTTU-1] => (item=YukobaTTU-3)
@@ -7479,19 +7480,19 @@ ok: [YukobaTTU-3] => (item=YukobaTTU-3)
 PLAY [Docker Server] ***********************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [YukobaTTU-2]
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-3]
+ok: [YukobaTTU-2]
 
 TASK [docker : Install Docker] *************************************************
-ok: [YukobaTTU-2]
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-3]
+ok: [YukobaTTU-2]
 
 TASK [docker : Start Docker] ***************************************************
-ok: [YukobaTTU-2]
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-3]
+ok: [YukobaTTU-2]
 
 PLAY [Pinger Server] ***********************************************************
 
@@ -7560,32 +7561,32 @@ ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [agama : Create agama Directory] ******************************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 
 TASK [agama : Download agama Files] ********************************************
 ok: [YukobaTTU-2] => (item=agama.py)
 ok: [YukobaTTU-1] => (item=agama.py)
-ok: [YukobaTTU-1] => (item=Dockerfile)
 ok: [YukobaTTU-2] => (item=Dockerfile)
+ok: [YukobaTTU-1] => (item=Dockerfile)
 
 TASK [agama : Create agama Docker Image] ***************************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 
 TASK [agama : Start agama Docker Container] ************************************
 ok: [YukobaTTU-2] => (item=None)
-ok: [YukobaTTU-1] => (item=None)
 ok: [YukobaTTU-2] => (item=None)
 ok: [YukobaTTU-1] => (item=None)
 ok: [YukobaTTU-2] => (item=None)
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1] => (item=None)
 ok: [YukobaTTU-1] => (item=None)
 ok: [YukobaTTU-1]
 
 TASK [agama : List agama Containers] *******************************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 
 TASK [agama : Stop unnecessary agama containers] *******************************
 
@@ -7596,20 +7597,20 @@ ok: [YukobaTTU-1] => (item=YukobaTTU-3)
 ok: [YukobaTTU-2] => (item=YukobaTTU-3)
 
 TASK [dns_record : Add A record] ***********************************************
-ok: [YukobaTTU-2] => (item=YukobaTTU-3)
 ok: [YukobaTTU-1] => (item=YukobaTTU-3)
+ok: [YukobaTTU-2] => (item=YukobaTTU-3)
 
 PLAY [Nginx Server] ************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-3]
 
 TASK [nginx : Install Nginx] ***************************************************
 ok: [YukobaTTU-2]
-ok: [YukobaTTU-3]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-3]
 
 TASK [nginx : Template Nginx Config] *******************************************
 ok: [YukobaTTU-2]
@@ -7618,39 +7619,39 @@ ok: [YukobaTTU-3]
 
 TASK [nginx : Enable and Start Nginx Service] **********************************
 ok: [YukobaTTU-1] => (item=nginx)
-ok: [YukobaTTU-2] => (item=nginx)
 ok: [YukobaTTU-3] => (item=nginx)
-ok: [YukobaTTU-2] => (item=prometheus-nginx-exporter)
+ok: [YukobaTTU-2] => (item=nginx)
 ok: [YukobaTTU-1] => (item=prometheus-nginx-exporter)
+ok: [YukobaTTU-2] => (item=prometheus-nginx-exporter)
 ok: [YukobaTTU-3] => (item=prometheus-nginx-exporter)
 
 PLAY [HAProxy] *****************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 
 TASK [haproxy : Install HAProxy] ***********************************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 
 TASK [Add HAProxy A Records] ***************************************************
 
 TASK [dns_record : Add A record] ***********************************************
-ok: [YukobaTTU-2] => (item=YukobaTTU-3)
 ok: [YukobaTTU-1] => (item=YukobaTTU-3)
+ok: [YukobaTTU-2] => (item=YukobaTTU-3)
 
 TASK [dns_record : Add A record] ***********************************************
 ok: [YukobaTTU-1] => (item=YukobaTTU-3)
 ok: [YukobaTTU-2] => (item=YukobaTTU-3)
 
 TASK [haproxy : Template haproxy.cfg] ******************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [haproxy : Start HAProxy] *************************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [haproxy : Install HAProxy Exporter] **************************************
 ok: [YukobaTTU-2]
@@ -7667,8 +7668,8 @@ ok: [YukobaTTU-1]
 PLAY [Keepalived] **************************************************************
 
 TASK [Gathering Facts] *********************************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [keepalived : set_fact] ***************************************************
 ok: [YukobaTTU-1]
@@ -7683,32 +7684,32 @@ ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
 
 TASK [keepalived : Create keepalived_script User] ******************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [keepalived : Copy keepalived_script] *************************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [keepalived : Copy keepalived.conf] ***************************************
-ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
+ok: [YukobaTTU-1]
 
 TASK [keepalived : Enable and Start Keepalived] ********************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [keepalived : Download Keepalived Exporter] *******************************
 ok: [YukobaTTU-1]
 ok: [YukobaTTU-2]
 
 TASK [keepalived : Create keepalived-exporter service] *************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [keepalived : Restart systemctl daemon] ***********************************
-ok: [YukobaTTU-2]
 ok: [YukobaTTU-1]
+ok: [YukobaTTU-2]
 
 TASK [keepalived : Enable and Start keepalived-exporter service] ***************
 ok: [YukobaTTU-2]
@@ -7720,4 +7721,4 @@ YukobaTTU-2                : ok=73   changed=0    unreachable=0    failed=0    s
 YukobaTTU-3                : ok=71   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 
 + date
-Tue Jan 16 02:22:46 PM EET 2024
+Wed Jan 17 10:17:48 AM EET 2024
