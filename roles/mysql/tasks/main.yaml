@@ -13,7 +13,7 @@
   template:
     src: override.cnf.j2
     dest: /etc/mysql/mysql.conf.d/override.cnf
-    mode: '0755'
+    mode: '0644'
   notify: Restart MySQL
 
 - name: Enable and Start MySQL Server
@@ -47,7 +47,7 @@
   template:
     src: exporter_my.cnf.j2
     dest: /var/lib/prometheus/.my.cnf
-    mode: 0644
+    mode: 0660
     owner: prometheus
     group: prometheus
   no_log: true
